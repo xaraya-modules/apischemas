@@ -12,7 +12,7 @@ sys::import('modules.dynamicdata.class.objects.master');
  *
  * @author mikespub <mikespub@xaraya.com>
 **/
-class xarAPISchemas_Manager
+class xarAPISchemas_Import
 {
     protected static $dd_prefix = 'api_';
     protected static $moduleid = 18252;
