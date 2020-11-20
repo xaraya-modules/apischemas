@@ -21,6 +21,11 @@ class xarAPISchemas_Import
     protected static $dataproperty = null;
     protected static $schemas;
     protected static $fixtures;
+    protected static $mapping;
+    protected static $alias = array();
+    protected static $links = array();
+    protected static $models = array();
+    protected static $inherit = array();
     protected static $objects = array();
 
     public static function init(array $args = array())
@@ -31,7 +36,19 @@ class xarAPISchemas_Import
         self::get_proptype_ids();
         self::$schemas = dirname(__DIR__) . '/resources/schemas';
         self::$fixtures = dirname(__DIR__) . '/resources/fixtures';
+        self::$mapping = dirname(__DIR__) . '/resources/mapping.json';
+        self::get_mapping();
         self::get_objects();
+    }
+
+    public static function get_mapping()
+    {
+        $content = file_get_contents(self::$mapping);
+        $info = json_decode($content, true);
+        self::$alias = $info['alias'];
+        self::$links = $info['links'];
+        self::$models = $info['models'];
+        self::$inherit = $info['inherit'];
     }
 
     public static function get_objects()
@@ -47,8 +64,26 @@ class xarAPISchemas_Import
             }
             self::$objects[$objectinfo['name']] = $objectinfo;
         }
+        //self::find_links();
         return self::$objects;
     }
+
+    /**
+    public static function find_links()
+    {
+        self::$links = array();
+        foreach (self::$objects as $objectname => $info) {
+            $dataobject = DataObjectMaster::getObject(array('name' => $objectname));
+            foreach ($dataobject->properties as $property) {
+                //if ($property->type == self::$proptype_ids['array']) {
+                if ($property->type == self::$proptype_ids['textarea']) {
+                    self::$links[] = array('from' => $objectname, 'to' => $property->name);
+                }
+            }
+        }
+        return self::$links;
+    }
+     */
 
     public static function get_proptype_ids()
     {
@@ -68,6 +103,7 @@ class xarAPISchemas_Import
             //print_r(self::$objects[$objectname]);
             return self::$objects[$objectname]['objectid'];
         }
+        echo 'Creating object ' . $objectname . "\n";
         self::$itemtype += 1;
         $objectid = DataObjectMaster::createObject(
             array(
@@ -88,6 +124,7 @@ class xarAPISchemas_Import
                 'name' => $name,
                 'label' => $label,
                 'type' => $type,
+                'defaultvalue' => '',
                 'seq' => $seq
             )
         );
@@ -132,11 +169,97 @@ class xarAPISchemas_Import
                     'name' => $name,
                     'label' => $label,
                     'type' => $type,
+                    'defaultvalue' => '',
                     'status' => $status,
                     'seq' => $seq
                 )
             );
         }
+        return $objectid;
+    }
+
+    public static function check_links()
+    {
+        ksort(self::$links);
+        $seen = array();
+        foreach (self::$links as $source => $fields) {
+            foreach ($fields as $from => $to) {
+                list($target, $field) = explode('.', $to);
+                $check = "$target:$field=$source:$from";
+                if (in_array($check, $seen)) {
+                    continue;
+                }
+                $seen[] = "$source:$from=$target:$field";
+                // @checkme assuming only one many-to-many link between objects here
+                $objectid = self::create_link($source, $target);
+            }
+        }
+        self::get_objects();
+    }
+
+    public static function create_link($source, $target)
+    {
+        $objectname = self::$dd_prefix . $source . '_' . $target;
+        $title = ucfirst($source) . ' x ' . ucfirst($target);
+        if (array_key_exists($objectname, self::$objects)) {
+            //print_r(self::$objects[$objectname]);
+            return self::$objects[$objectname]['objectid'];
+        }
+        echo 'Creating object ' . $objectname . "\n";
+        self::$itemtype += 1;
+        $objectid = DataObjectMaster::createObject(
+            array(
+                'name' => $objectname,
+                'label' => $title,
+                'moduleid' => self::$moduleid,
+                'itemtype' => self::$itemtype
+            )
+        );
+        $name = 'id';
+        $label = 'Id';
+        $type = self::$proptype_ids['itemid'];
+        $seq = 1;
+        $propid = self::$dataproperty->createItem(
+            array(
+                'itemid' => 0,
+                'objectid' => $objectid,
+                'name' => $name,
+                'label' => $label,
+                'type' => $type,
+                'defaultvalue' => '',
+                'seq' => $seq
+            )
+        );
+        $name = $source . '_id';
+        $label = ucfirst($source) . 'Id';
+        $type = self::$proptype_ids['deferred'];
+        $seq += 1;
+        $propid = self::$dataproperty->createItem(
+            array(
+                'itemid' => 0,
+                'objectid' => $objectid,
+                'name' => $name,
+                'label' => $label,
+                'type' => $type,
+                'defaultvalue' => 'dataobject:' . self::$dd_prefix . $source . '.name',
+                'seq' => $seq
+            )
+        );
+        $name = $target . '_id';
+        $label = ucfirst($target) . 'Id';
+        $type = self::$proptype_ids['deferred'];
+        $seq += 1;
+        $propid = self::$dataproperty->createItem(
+            array(
+                'itemid' => 0,
+                'objectid' => $objectid,
+                'name' => $name,
+                'label' => $label,
+                'type' => $type,
+                'defaultvalue' => 'dataobject:' . self::$dd_prefix . $target . '.name',
+                'seq' => $seq
+            )
+        );
         return $objectid;
     }
 
@@ -148,6 +271,7 @@ class xarAPISchemas_Import
             if (strpos($file, '.json') === false) {
                 continue;
             }
+            echo 'Loading schema ' . $file . "\n";
             $info = self::parse_schema($file);
             //self::dump_schema($info);
             $schemas[$info->name] = $info;
@@ -156,7 +280,8 @@ class xarAPISchemas_Import
         foreach ($schemas as $name => $info) {
             $objectid = self::create_object($info);
         }
-        self::$objects = self::get_objects();
+        self::get_objects();
+        self::check_links();
     }
 
     public static function parse_schema(string $file)
@@ -181,6 +306,18 @@ class xarAPISchemas_Import
         }
     }
 
+    public static function delete_objects()
+    {
+        self::init();
+        foreach (self::$objects as $objectname => $info) {
+            echo 'Deleting object ' . $objectname . "\n";
+            $result = DataObjectMaster::deleteObject(array('name' => $objectname));
+            if (empty($result)) {
+                throw new Exception('Error deleting object ' . $objectname);
+            }
+        }
+    }
+
     public static function load_items()
     {
         self::init();
@@ -199,25 +336,36 @@ class xarAPISchemas_Import
             }
         }
         // @checkme handle sub-classing transport to starship and vehicle
-        $parent = 'resources.transport';
-        $children = array('resources.starship', 'resources.vehicle');
-        foreach ($children as $model) {
+        foreach (array_keys(self::$inherit) as $model) {
+            $parent = self::$inherit[$model];
             foreach (array_keys($data[$model]) as $id) {
                 $data[$model][$id] = array_merge($data[$parent][$id], $data[$model][$id]);
             }
         }
-        unset($data[$parent]);
+        foreach (array_unique(array_values(self::$inherit)) as $parent) {
+            unset($data[$parent]);
+        }
         self::dump_items($data);
         foreach ($data as $model => $items) {
             //echo json_encode($items, JSON_PRETTY_PRINT);
-            $objectname = self::$dd_prefix . str_replace('resources.', '', $model);
+            $schema = self::$models[$model];
+            $objectname = self::$dd_prefix . $schema;
             if (!array_key_exists($objectname, self::$objects)) {
-                $objectname .= 's';
-                if (!array_key_exists($objectname, self::$objects)) {
-                    throw new Exception('Unknown object: ' . $objectname);
-                }
+                throw new Exception('Unknown object: ' . $objectname);
             }
+            echo 'Loading items for object ' . $objectname . ': ' . count($items) . "\n";
             $dataobject = DataObjectMaster::getObject(array('name' => $objectname));
+            $datalinks = array();
+            $datatarget = array();
+            foreach (self::$links[$schema] as $from => $to) {
+                list($target, $field) = explode('.', $to);
+                $tosort = array($schema, $target);
+                sort($tosort);
+                $linkname = self::$dd_prefix . implode('_', $tosort);
+                echo 'Adding links for ' . $from . ' in ' . $linkname . "\n";
+                $datalinks[$from] = DataObjectMaster::getObject(array('name' => $linkname));
+                $datatarget[$from] = $target;
+            }
             // @todo keep array serialized/encoded for now - add relationships later
             $serialized = array();
             foreach ($dataobject->properties as $property) {
@@ -233,13 +381,20 @@ class xarAPISchemas_Import
                 foreach ($serialized as $name) {
                     if (!array_key_exists($name, $item)) {
                         $item[$name] = array();
+                    } elseif (is_array($item[$name])) {
+                        foreach ($item[$name] as $val) {
+                            $link = array('id' => 0, $schema . '_id' => $item['id'], $datatarget[$name] . '_id' => $val);
+                            $linkid = $datalinks[$name]->createItem($link);
+                        }
+                    } else {
+                        throw new Exception('Invalid field $name=' . $item[$name] . ' for object ' . $objectname);
                     }
                     //$item[$name] = serialize($item[$name]);
                     $item[$name] = json_encode($item[$name]);
                 }
                 $itemid = $dataobject->createItem($item);
                 if (empty($itemid) || $itemid !== $item['id']) {
-                    throw new Exception('Invalid itemid ' . $itemid . 'for object ' . $objectname);
+                    throw new Exception('Invalid itemid ' . $itemid . ' for object ' . $objectname);
                 }
             }
         }
@@ -272,4 +427,21 @@ class xarAPISchemas_Import
         }
     }
 
+    public static function delete_items()
+    {
+        self::init();
+        foreach (self::$objects as $objectname => $info) {
+            $objectlist = DataObjectMaster::getObjectList(array('name' => $objectname));
+            $items = $objectlist->getItems();
+            echo 'Deleting items for object ' . $objectname . ': ' . count($items) . "\n";
+            $dataobject = DataObjectMaster::getObject(array('name' => $objectname));
+            foreach ($items as $itemid => $item) {
+                //echo $itemid . ': ' . json_encode($item) . "\n";
+                $itemid = $dataobject->deleteItem(array('itemid' => $itemid));
+                if (empty($itemid)) {
+                    throw new Exception('Error deleting itemid ' . $item['id'] . ' for object ' . $objectname);
+                }
+            }
+        }
+    }
 }

@@ -1,0 +1,55 @@
+{
+    "alias": {
+        "characters": "people",
+        "pilots": "people",
+        "residents": "people",
+        "homeworld": "planets"
+    },
+    "links": {
+        "films": {
+            "characters": "people.films",
+            "planets": "planets.films",
+            "starships": "starships.films",
+            "vehicles": "vehicles.films",
+            "species": "species.films"
+        },
+        "people": {
+            "films": "films.characters",
+            "species": "species.people",
+            "homeworld": "planets.residents",
+            "vehicles": "vehicles.pilots",
+            "starships": "starships.pilots"
+        },
+        "planets": {
+            "films": "films.planets",
+            "residents": "people.homeworld",
+            "species": "species.homeworld"
+        },
+        "species": {
+            "people": "people.species",
+            "homeworld": "planets.species",
+            "films": "films.species"
+        },
+        "starships": {
+            "films": "films.starships",
+            "pilots": "people.starships"
+        },
+        "vehicles": {
+            "films": "films.vehicles",
+            "pilots": "people.vehicles"
+        }
+    },
+    "models": {
+        "resources.film": "films",
+        "resources.people": "people",
+        "resources.planet": "planets",
+        "resources.species": "species",
+        "resources.starship": "starships",
+        "resources.transport": "",
+        "resources.vehicle": "vehicles"
+    },
+    "inherit": {
+        "resources.starship": "resources.transport",
+        "resources.vehicle": "resources.transport"
+    }
+}
