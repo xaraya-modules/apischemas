@@ -128,12 +128,14 @@ class xarAPISchemas_Import
                 'seq' => $seq
             )
         );
+        $source = $info->name;
         foreach ($info->properties as $name => $property) {
             if (property_exists($property, 'format')) {
                 $format = $property->format;
             } else {
                 $format = $property->type;
             }
+            $default = '';
             $status = DataPropertyMaster::DD_DISPLAYSTATE_ACTIVE | DataPropertyMaster::DD_INPUTSTATE_ADDMODIFY;
             switch ($format) {
                 case 'integer':
@@ -141,12 +143,28 @@ class xarAPISchemas_Import
                     break;
                 case 'string':
                     $type = self::$proptype_ids['textbox'];
+                    // @todo add link to one-to-many relationships too, cfr. homeworld
+                    if (array_key_exists($source, self::$links) && array_key_exists($name, self::$links[$source])) {
+                        $type = self::$proptype_ids['deferitem'];
+                        $to = self::$links[$source][$name];
+                        list($target, $field) = explode('.', $to);
+                        $default = 'dataobject:' . self::$dd_prefix . $target . '.name';
+                    }
                     break;
                 case 'array':
                     //$type = self::$proptype_ids['array'];
                     $type = self::$proptype_ids['textarea'];
                     // @todo handle many-to-one and many-to-many dependencies
                     //$type = self::$proptype_ids['subitems'];
+                    if (array_key_exists($source, self::$links) && array_key_exists($name, self::$links[$source])) {
+                        $type = self::$proptype_ids['defermany'];
+                        $to = self::$links[$source][$name];
+                        list($target, $field) = explode('.', $to);
+                        $tosort = array($source, $target);
+                        sort($tosort);
+                        $linkname = self::$dd_prefix . implode('_', $tosort);
+                        $default = 'linkobject:' . $linkname . '.' . $source . '_id.' . $target . '_id';
+                    }
                     $status = DataPropertyMaster::DD_DISPLAYSTATE_DISPLAYONLY | DataPropertyMaster::DD_INPUTSTATE_ADDMODIFY;
                     break;
                 case 'date-time':
@@ -169,7 +187,7 @@ class xarAPISchemas_Import
                     'name' => $name,
                     'label' => $label,
                     'type' => $type,
-                    'defaultvalue' => '',
+                    'defaultvalue' => $default,
                     'status' => $status,
                     'seq' => $seq
                 )
@@ -199,17 +217,17 @@ class xarAPISchemas_Import
 
     public static function create_link($source, $target)
     {
-        $objectname = self::$dd_prefix . $source . '_' . $target;
+        $linkname = self::$dd_prefix . $source . '_' . $target;
         $title = ucfirst($source) . ' x ' . ucfirst($target);
-        if (array_key_exists($objectname, self::$objects)) {
-            //print_r(self::$objects[$objectname]);
-            return self::$objects[$objectname]['objectid'];
+        if (array_key_exists($linkname, self::$objects)) {
+            //print_r(self::$objects[$linkname]);
+            return self::$objects[$linkname]['objectid'];
         }
-        echo 'Creating object ' . $objectname . "\n";
+        echo 'Creating object ' . $linkname . "\n";
         self::$itemtype += 1;
         $objectid = DataObjectMaster::createObject(
             array(
-                'name' => $objectname,
+                'name' => $linkname,
                 'label' => $title,
                 'moduleid' => self::$moduleid,
                 'itemtype' => self::$itemtype
@@ -232,7 +250,7 @@ class xarAPISchemas_Import
         );
         $name = $source . '_id';
         $label = ucfirst($source) . 'Id';
-        $type = self::$proptype_ids['deferred'];
+        $type = self::$proptype_ids['deferitem'];
         $seq += 1;
         $propid = self::$dataproperty->createItem(
             array(
@@ -247,7 +265,7 @@ class xarAPISchemas_Import
         );
         $name = $target . '_id';
         $label = ucfirst($target) . 'Id';
-        $type = self::$proptype_ids['deferred'];
+        $type = self::$proptype_ids['deferitem'];
         $seq += 1;
         $propid = self::$dataproperty->createItem(
             array(
@@ -372,6 +390,10 @@ class xarAPISchemas_Import
                 //if ($property->type == self::$proptype_ids['array']) {
                 if ($property->type == self::$proptype_ids['textarea']) {
                     $serialized[] = $property->name;
+		} elseif ($property->type == self::$proptype_ids['defermany']) {
+                    $serialized[] = $property->name;
+		} elseif ($property->type == self::$proptype_ids['deferitem']) {
+                    $serialized[] = $property->name;
                 }
             }
             foreach ($items as $id => $item) {
@@ -386,8 +408,12 @@ class xarAPISchemas_Import
                             $link = array('id' => 0, $schema . '_id' => $item['id'], $datatarget[$name] . '_id' => $val);
                             $linkid = $datalinks[$name]->createItem($link);
                         }
+                    // @todo add link to one-to-many relationships too, cfr. homeworld
+                    } elseif (!empty($item[$name]) && is_numeric($item[$name])) {
+                        $link = array('id' => 0, $schema . '_id' => $item['id'], $datatarget[$name] . '_id' => intval($item[$name]));
+                        $linkid = $datalinks[$name]->createItem($link);
                     } else {
-                        throw new Exception('Invalid field $name=' . $item[$name] . ' for object ' . $objectname);
+                        //throw new Exception('Invalid field ' . $name . '=' . $item[$name] . ' for object ' . $objectname);
                     }
                     //$item[$name] = serialize($item[$name]);
                     $item[$name] = json_encode($item[$name]);
