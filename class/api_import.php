@@ -24,6 +24,7 @@ class xarAPISchemas_Import
     protected static $mapping;
     protected static $alias = array();
     protected static $links = array();
+    protected static $labels = array();
     protected static $models = array();
     protected static $inherit = array();
     protected static $objects = array();
@@ -47,6 +48,7 @@ class xarAPISchemas_Import
         $info = json_decode($content, true);
         self::$alias = $info['alias'];
         self::$links = $info['links'];
+        self::$labels = $info['labels'];
         self::$models = $info['models'];
         self::$inherit = $info['inherit'];
     }
@@ -148,7 +150,7 @@ class xarAPISchemas_Import
                         $type = self::$proptype_ids['deferitem'];
                         $to = self::$links[$source][$name];
                         list($target, $field) = explode('.', $to);
-                        $default = 'dataobject:' . self::$dd_prefix . $target . '.name';
+                        $default = 'dataobject:' . self::$dd_prefix . $target . '.' . self::$labels[$target];
                     }
                     break;
                 case 'array':
@@ -160,10 +162,11 @@ class xarAPISchemas_Import
                         $type = self::$proptype_ids['defermany'];
                         $to = self::$links[$source][$name];
                         list($target, $field) = explode('.', $to);
+                        // @checkme we only create one many-to-many link object sorted by name
                         $tosort = array($source, $target);
                         sort($tosort);
                         $linkname = self::$dd_prefix . implode('_', $tosort);
-                        $default = 'linkobject:' . $linkname . '.' . $source . '_id.' . $target . '_id';
+                        $default = 'linkobject:' . $linkname . '.' . $source . '_id.' . $target . '_id:' . self::$dd_prefix . $target . '.' . self::$labels[$target];
                     }
                     $status = DataPropertyMaster::DD_DISPLAYSTATE_DISPLAYONLY | DataPropertyMaster::DD_INPUTSTATE_ADDMODIFY;
                     break;
@@ -198,6 +201,7 @@ class xarAPISchemas_Import
 
     public static function check_links()
     {
+        // @checkme we only create one many-to-many link object sorted by name
         ksort(self::$links);
         $seen = array();
         foreach (self::$links as $source => $fields) {
@@ -259,7 +263,7 @@ class xarAPISchemas_Import
                 'name' => $name,
                 'label' => $label,
                 'type' => $type,
-                'defaultvalue' => 'dataobject:' . self::$dd_prefix . $source . '.name',
+                'defaultvalue' => 'dataobject:' . self::$dd_prefix . $source . '.' . self::$labels[$source],
                 'seq' => $seq
             )
         );
@@ -274,7 +278,7 @@ class xarAPISchemas_Import
                 'name' => $name,
                 'label' => $label,
                 'type' => $type,
-                'defaultvalue' => 'dataobject:' . self::$dd_prefix . $target . '.name',
+                'defaultvalue' => 'dataobject:' . self::$dd_prefix . $target . '.' . self::$labels[$target],
                 'seq' => $seq
             )
         );
@@ -377,6 +381,7 @@ class xarAPISchemas_Import
             $datatarget = array();
             foreach (self::$links[$schema] as $from => $to) {
                 list($target, $field) = explode('.', $to);
+                // @checkme we only create one many-to-many link object sorted by name
                 $tosort = array($schema, $target);
                 sort($tosort);
                 $linkname = self::$dd_prefix . implode('_', $tosort);
@@ -390,9 +395,9 @@ class xarAPISchemas_Import
                 //if ($property->type == self::$proptype_ids['array']) {
                 if ($property->type == self::$proptype_ids['textarea']) {
                     $serialized[] = $property->name;
-		} elseif ($property->type == self::$proptype_ids['defermany']) {
+                } elseif ($property->type == self::$proptype_ids['defermany']) {
                     $serialized[] = $property->name;
-		} elseif ($property->type == self::$proptype_ids['deferitem']) {
+                } elseif ($property->type == self::$proptype_ids['deferitem']) {
                     $serialized[] = $property->name;
                 }
             }
@@ -402,12 +407,14 @@ class xarAPISchemas_Import
                 // @todo keep array serialized for now - add relationships later
                 foreach ($serialized as $name) {
                     if (!array_key_exists($name, $item)) {
-                        $item[$name] = array();
+                        $item[$name] = null;
                     } elseif (is_array($item[$name])) {
                         foreach ($item[$name] as $val) {
                             $link = array('id' => 0, $schema . '_id' => $item['id'], $datatarget[$name] . '_id' => $val);
                             $linkid = $datalinks[$name]->createItem($link);
                         }
+                        //$item[$name] = serialize($item[$name]);
+                        $item[$name] = json_encode($item[$name]);
                     // @todo add link to one-to-many relationships too, cfr. homeworld
                     } elseif (!empty($item[$name]) && is_numeric($item[$name])) {
                         $link = array('id' => 0, $schema . '_id' => $item['id'], $datatarget[$name] . '_id' => intval($item[$name]));
@@ -415,8 +422,6 @@ class xarAPISchemas_Import
                     } else {
                         //throw new Exception('Invalid field ' . $name . '=' . $item[$name] . ' for object ' . $objectname);
                     }
-                    //$item[$name] = serialize($item[$name]);
-                    $item[$name] = json_encode($item[$name]);
                 }
                 $itemid = $dataobject->createItem($item);
                 if (empty($itemid) || $itemid !== $item['id']) {

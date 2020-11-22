@@ -39,6 +39,14 @@
             "pilots": "people.vehicles"
         }
     },
+    "labels": {
+        "films": "title",
+        "people": "name",
+        "planets": "name",
+        "species": "name",
+        "starships": "name",
+        "vehicles": "name"
+    },
     "models": {
         "resources.film": "films",
         "resources.people": "people",
