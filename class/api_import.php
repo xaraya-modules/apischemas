@@ -1,7 +1,7 @@
 <?php
 sys::import('modules.dynamicdata.class.objects.master');
 /**
- * Class to manage the API schemas
+ * Class to import the API schemas
  *
  * @package modules\apischemas
  * @category Xaraya Web Applications Framework

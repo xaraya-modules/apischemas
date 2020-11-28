@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xar:template xmlns:xar="http://xaraya.com/2004/blocklayout">
+    <!-- License: GPL http://www.gnu.org/copyleft/gpl.html -->
+    <div class="xar-mod-head">
+        <span class="xar-mod-title">
+            API Schemas
+        </span>
+    </div>
+    <div class="xar-mod-body">
+        <div class="xar-mod-object-head">
+            <h2>View API Schemas</h2>
+        </div>
+        <!-- show the list of main objects -->
+        <div class="xar-mod-object-body">
+            <!-- xar:template type="module" file="main_objects"/-->
+        </div>
+    </div>
+</xar:template>
