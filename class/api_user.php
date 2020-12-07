@@ -1,8 +1,5 @@
 <?php
-sys::import('modules.dynamicdata.class.objects.master');
 /**
- * Class to manage the API schemas
- *
  * @package modules\apischemas
  * @category Xaraya Web Applications Framework
  * @version 2.4.0
@@ -11,6 +8,10 @@ sys::import('modules.dynamicdata.class.objects.master');
  * @link https://github.com/mikespub/xaraya-modules
  *
  * @author mikespub <mikespub@xaraya.com>
+**/
+sys::import('modules.dynamicdata.class.objects.master');
+/**
+ * Class to manage the API schemas
 **/
 class xarAPISchemas_User
 {
