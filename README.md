@@ -11,5 +11,7 @@ You can view the imported objects via the dynamicdata user interface, and follow
 
 https://owncloud.mikespub.net/bermuda/index.php?object=api_starships&method=display&itemid=10
 
+![Imported Object](xarimages/apischemas.png)
+
 The inspiration for these experiments is the Stars Wars API (SWAPI) and the SWAPI GraphQL Wrapper to https://swapi.dev/
 
