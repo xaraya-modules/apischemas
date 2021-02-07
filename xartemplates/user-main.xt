@@ -13,7 +13,10 @@
         <!-- show the list of main objects -->
         <div class="xar-mod-object-body">
             <!-- xar:template type="module" file="main_objects"/-->
-            Try out the <a href="code/modules/apischemas/playground/minimal.html">GraphQL Playground</a>
+            <ul>
+                <li>Try out the <a href="code/modules/apischemas/swagger-ui/">Swagger UI (OpenAPI)</a></li>
+                <li>Try out the <a href="code/modules/apischemas/playground/">GraphQL Playground</a></li>
+            </ul>
         </div>
     </div>
 </xar:template>

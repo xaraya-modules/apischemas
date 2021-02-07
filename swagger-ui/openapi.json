@@ -1,0 +1,2548 @@
+{
+    "openapi": "3.0.2",
+    "info": {
+        "title": "DynamicData REST API (read-only)",
+        "version": "1.0.0"
+    },
+    "servers": [
+        {
+            "url": "https://owncloud.mikespub.net/bermuda/api.php/v1"
+        }
+    ],
+    "paths": {
+        "/objects": {
+            "get": {
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/limit"
+                    },
+                    {
+                        "$ref": "#/components/parameters/offset"
+                    },
+                    {
+                        "$ref": "#/components/parameters/order"
+                    }
+                ],
+                "tags": [
+                    "objects"
+                ],
+                "operationId": "view_objects",
+                "description": "View list of objects",
+                "responses": {
+                    "200": {
+                        "$ref": "#/components/responses/view-objects"
+                    }
+                }
+            }
+        },
+        "/objects/sample": {
+            "get": {
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/limit"
+                    },
+                    {
+                        "$ref": "#/components/parameters/offset"
+                    },
+                    {
+                        "$ref": "#/components/parameters/order"
+                    }
+                ],
+                "tags": [
+                    "sample"
+                ],
+                "operationId": "view_sample",
+                "description": "View list of sample",
+                "responses": {
+                    "200": {
+                        "$ref": "#/components/responses/view-sample"
+                    }
+                }
+            }
+        },
+        "/objects/sample/{id}": {
+            "get": {
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/itemid"
+                    }
+                ],
+                "tags": [
+                    "sample"
+                ],
+                "operationId": "display_sample",
+                "description": "Display single sample",
+                "responses": {
+                    "200": {
+                        "$ref": "#/components/responses/display-sample"
+                    }
+                }
+            }
+        },
+        "/objects/api_films": {
+            "get": {
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/limit"
+                    },
+                    {
+                        "$ref": "#/components/parameters/offset"
+                    },
+                    {
+                        "$ref": "#/components/parameters/order"
+                    }
+                ],
+                "tags": [
+                    "api_films"
+                ],
+                "operationId": "view_api_films",
+                "description": "View list of api_films",
+                "responses": {
+                    "200": {
+                        "$ref": "#/components/responses/view-api_films"
+                    }
+                }
+            }
+        },
+        "/objects/api_films/{id}": {
+            "get": {
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/itemid"
+                    }
+                ],
+                "tags": [
+                    "api_films"
+                ],
+                "operationId": "display_api_films",
+                "description": "Display single api_films",
+                "responses": {
+                    "200": {
+                        "$ref": "#/components/responses/display-api_films"
+                    }
+                }
+            }
+        },
+        "/objects/api_people": {
+            "get": {
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/limit"
+                    },
+                    {
+                        "$ref": "#/components/parameters/offset"
+                    },
+                    {
+                        "$ref": "#/components/parameters/order"
+                    }
+                ],
+                "tags": [
+                    "api_people"
+                ],
+                "operationId": "view_api_people",
+                "description": "View list of api_people",
+                "responses": {
+                    "200": {
+                        "$ref": "#/components/responses/view-api_people"
+                    }
+                }
+            }
+        },
+        "/objects/api_people/{id}": {
+            "get": {
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/itemid"
+                    }
+                ],
+                "tags": [
+                    "api_people"
+                ],
+                "operationId": "display_api_people",
+                "description": "Display single api_people",
+                "responses": {
+                    "200": {
+                        "$ref": "#/components/responses/display-api_people"
+                    }
+                }
+            }
+        },
+        "/objects/api_planets": {
+            "get": {
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/limit"
+                    },
+                    {
+                        "$ref": "#/components/parameters/offset"
+                    },
+                    {
+                        "$ref": "#/components/parameters/order"
+                    }
+                ],
+                "tags": [
+                    "api_planets"
+                ],
+                "operationId": "view_api_planets",
+                "description": "View list of api_planets",
+                "responses": {
+                    "200": {
+                        "$ref": "#/components/responses/view-api_planets"
+                    }
+                }
+            }
+        },
+        "/objects/api_planets/{id}": {
+            "get": {
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/itemid"
+                    }
+                ],
+                "tags": [
+                    "api_planets"
+                ],
+                "operationId": "display_api_planets",
+                "description": "Display single api_planets",
+                "responses": {
+                    "200": {
+                        "$ref": "#/components/responses/display-api_planets"
+                    }
+                }
+            }
+        },
+        "/objects/api_species": {
+            "get": {
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/limit"
+                    },
+                    {
+                        "$ref": "#/components/parameters/offset"
+                    },
+                    {
+                        "$ref": "#/components/parameters/order"
+                    }
+                ],
+                "tags": [
+                    "api_species"
+                ],
+                "operationId": "view_api_species",
+                "description": "View list of api_species",
+                "responses": {
+                    "200": {
+                        "$ref": "#/components/responses/view-api_species"
+                    }
+                }
+            }
+        },
+        "/objects/api_species/{id}": {
+            "get": {
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/itemid"
+                    }
+                ],
+                "tags": [
+                    "api_species"
+                ],
+                "operationId": "display_api_species",
+                "description": "Display single api_species",
+                "responses": {
+                    "200": {
+                        "$ref": "#/components/responses/display-api_species"
+                    }
+                }
+            }
+        },
+        "/objects/api_starships": {
+            "get": {
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/limit"
+                    },
+                    {
+                        "$ref": "#/components/parameters/offset"
+                    },
+                    {
+                        "$ref": "#/components/parameters/order"
+                    }
+                ],
+                "tags": [
+                    "api_starships"
+                ],
+                "operationId": "view_api_starships",
+                "description": "View list of api_starships",
+                "responses": {
+                    "200": {
+                        "$ref": "#/components/responses/view-api_starships"
+                    }
+                }
+            }
+        },
+        "/objects/api_starships/{id}": {
+            "get": {
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/itemid"
+                    }
+                ],
+                "tags": [
+                    "api_starships"
+                ],
+                "operationId": "display_api_starships",
+                "description": "Display single api_starships",
+                "responses": {
+                    "200": {
+                        "$ref": "#/components/responses/display-api_starships"
+                    }
+                }
+            }
+        },
+        "/objects/api_vehicles": {
+            "get": {
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/limit"
+                    },
+                    {
+                        "$ref": "#/components/parameters/offset"
+                    },
+                    {
+                        "$ref": "#/components/parameters/order"
+                    }
+                ],
+                "tags": [
+                    "api_vehicles"
+                ],
+                "operationId": "view_api_vehicles",
+                "description": "View list of api_vehicles",
+                "responses": {
+                    "200": {
+                        "$ref": "#/components/responses/view-api_vehicles"
+                    }
+                }
+            }
+        },
+        "/objects/api_vehicles/{id}": {
+            "get": {
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/itemid"
+                    }
+                ],
+                "tags": [
+                    "api_vehicles"
+                ],
+                "operationId": "display_api_vehicles",
+                "description": "Display single api_vehicles",
+                "responses": {
+                    "200": {
+                        "$ref": "#/components/responses/display-api_vehicles"
+                    }
+                }
+            }
+        },
+        "/objects/api_films_people": {
+            "get": {
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/limit"
+                    },
+                    {
+                        "$ref": "#/components/parameters/offset"
+                    },
+                    {
+                        "$ref": "#/components/parameters/order"
+                    }
+                ],
+                "tags": [
+                    "api_films_people"
+                ],
+                "operationId": "view_api_films_people",
+                "description": "View list of api_films_people",
+                "responses": {
+                    "200": {
+                        "$ref": "#/components/responses/view-api_films_people"
+                    }
+                }
+            }
+        },
+        "/objects/api_films_people/{id}": {
+            "get": {
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/itemid"
+                    }
+                ],
+                "tags": [
+                    "api_films_people"
+                ],
+                "operationId": "display_api_films_people",
+                "description": "Display single api_films_people",
+                "responses": {
+                    "200": {
+                        "$ref": "#/components/responses/display-api_films_people"
+                    }
+                }
+            }
+        },
+        "/objects/api_films_planets": {
+            "get": {
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/limit"
+                    },
+                    {
+                        "$ref": "#/components/parameters/offset"
+                    },
+                    {
+                        "$ref": "#/components/parameters/order"
+                    }
+                ],
+                "tags": [
+                    "api_films_planets"
+                ],
+                "operationId": "view_api_films_planets",
+                "description": "View list of api_films_planets",
+                "responses": {
+                    "200": {
+                        "$ref": "#/components/responses/view-api_films_planets"
+                    }
+                }
+            }
+        },
+        "/objects/api_films_planets/{id}": {
+            "get": {
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/itemid"
+                    }
+                ],
+                "tags": [
+                    "api_films_planets"
+                ],
+                "operationId": "display_api_films_planets",
+                "description": "Display single api_films_planets",
+                "responses": {
+                    "200": {
+                        "$ref": "#/components/responses/display-api_films_planets"
+                    }
+                }
+            }
+        },
+        "/objects/api_films_starships": {
+            "get": {
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/limit"
+                    },
+                    {
+                        "$ref": "#/components/parameters/offset"
+                    },
+                    {
+                        "$ref": "#/components/parameters/order"
+                    }
+                ],
+                "tags": [
+                    "api_films_starships"
+                ],
+                "operationId": "view_api_films_starships",
+                "description": "View list of api_films_starships",
+                "responses": {
+                    "200": {
+                        "$ref": "#/components/responses/view-api_films_starships"
+                    }
+                }
+            }
+        },
+        "/objects/api_films_starships/{id}": {
+            "get": {
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/itemid"
+                    }
+                ],
+                "tags": [
+                    "api_films_starships"
+                ],
+                "operationId": "display_api_films_starships",
+                "description": "Display single api_films_starships",
+                "responses": {
+                    "200": {
+                        "$ref": "#/components/responses/display-api_films_starships"
+                    }
+                }
+            }
+        },
+        "/objects/api_films_vehicles": {
+            "get": {
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/limit"
+                    },
+                    {
+                        "$ref": "#/components/parameters/offset"
+                    },
+                    {
+                        "$ref": "#/components/parameters/order"
+                    }
+                ],
+                "tags": [
+                    "api_films_vehicles"
+                ],
+                "operationId": "view_api_films_vehicles",
+                "description": "View list of api_films_vehicles",
+                "responses": {
+                    "200": {
+                        "$ref": "#/components/responses/view-api_films_vehicles"
+                    }
+                }
+            }
+        },
+        "/objects/api_films_vehicles/{id}": {
+            "get": {
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/itemid"
+                    }
+                ],
+                "tags": [
+                    "api_films_vehicles"
+                ],
+                "operationId": "display_api_films_vehicles",
+                "description": "Display single api_films_vehicles",
+                "responses": {
+                    "200": {
+                        "$ref": "#/components/responses/display-api_films_vehicles"
+                    }
+                }
+            }
+        },
+        "/objects/api_films_species": {
+            "get": {
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/limit"
+                    },
+                    {
+                        "$ref": "#/components/parameters/offset"
+                    },
+                    {
+                        "$ref": "#/components/parameters/order"
+                    }
+                ],
+                "tags": [
+                    "api_films_species"
+                ],
+                "operationId": "view_api_films_species",
+                "description": "View list of api_films_species",
+                "responses": {
+                    "200": {
+                        "$ref": "#/components/responses/view-api_films_species"
+                    }
+                }
+            }
+        },
+        "/objects/api_films_species/{id}": {
+            "get": {
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/itemid"
+                    }
+                ],
+                "tags": [
+                    "api_films_species"
+                ],
+                "operationId": "display_api_films_species",
+                "description": "Display single api_films_species",
+                "responses": {
+                    "200": {
+                        "$ref": "#/components/responses/display-api_films_species"
+                    }
+                }
+            }
+        },
+        "/objects/api_people_species": {
+            "get": {
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/limit"
+                    },
+                    {
+                        "$ref": "#/components/parameters/offset"
+                    },
+                    {
+                        "$ref": "#/components/parameters/order"
+                    }
+                ],
+                "tags": [
+                    "api_people_species"
+                ],
+                "operationId": "view_api_people_species",
+                "description": "View list of api_people_species",
+                "responses": {
+                    "200": {
+                        "$ref": "#/components/responses/view-api_people_species"
+                    }
+                }
+            }
+        },
+        "/objects/api_people_species/{id}": {
+            "get": {
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/itemid"
+                    }
+                ],
+                "tags": [
+                    "api_people_species"
+                ],
+                "operationId": "display_api_people_species",
+                "description": "Display single api_people_species",
+                "responses": {
+                    "200": {
+                        "$ref": "#/components/responses/display-api_people_species"
+                    }
+                }
+            }
+        },
+        "/objects/api_people_planets": {
+            "get": {
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/limit"
+                    },
+                    {
+                        "$ref": "#/components/parameters/offset"
+                    },
+                    {
+                        "$ref": "#/components/parameters/order"
+                    }
+                ],
+                "tags": [
+                    "api_people_planets"
+                ],
+                "operationId": "view_api_people_planets",
+                "description": "View list of api_people_planets",
+                "responses": {
+                    "200": {
+                        "$ref": "#/components/responses/view-api_people_planets"
+                    }
+                }
+            }
+        },
+        "/objects/api_people_planets/{id}": {
+            "get": {
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/itemid"
+                    }
+                ],
+                "tags": [
+                    "api_people_planets"
+                ],
+                "operationId": "display_api_people_planets",
+                "description": "Display single api_people_planets",
+                "responses": {
+                    "200": {
+                        "$ref": "#/components/responses/display-api_people_planets"
+                    }
+                }
+            }
+        },
+        "/objects/api_people_vehicles": {
+            "get": {
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/limit"
+                    },
+                    {
+                        "$ref": "#/components/parameters/offset"
+                    },
+                    {
+                        "$ref": "#/components/parameters/order"
+                    }
+                ],
+                "tags": [
+                    "api_people_vehicles"
+                ],
+                "operationId": "view_api_people_vehicles",
+                "description": "View list of api_people_vehicles",
+                "responses": {
+                    "200": {
+                        "$ref": "#/components/responses/view-api_people_vehicles"
+                    }
+                }
+            }
+        },
+        "/objects/api_people_vehicles/{id}": {
+            "get": {
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/itemid"
+                    }
+                ],
+                "tags": [
+                    "api_people_vehicles"
+                ],
+                "operationId": "display_api_people_vehicles",
+                "description": "Display single api_people_vehicles",
+                "responses": {
+                    "200": {
+                        "$ref": "#/components/responses/display-api_people_vehicles"
+                    }
+                }
+            }
+        },
+        "/objects/api_people_starships": {
+            "get": {
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/limit"
+                    },
+                    {
+                        "$ref": "#/components/parameters/offset"
+                    },
+                    {
+                        "$ref": "#/components/parameters/order"
+                    }
+                ],
+                "tags": [
+                    "api_people_starships"
+                ],
+                "operationId": "view_api_people_starships",
+                "description": "View list of api_people_starships",
+                "responses": {
+                    "200": {
+                        "$ref": "#/components/responses/view-api_people_starships"
+                    }
+                }
+            }
+        },
+        "/objects/api_people_starships/{id}": {
+            "get": {
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/itemid"
+                    }
+                ],
+                "tags": [
+                    "api_people_starships"
+                ],
+                "operationId": "display_api_people_starships",
+                "description": "Display single api_people_starships",
+                "responses": {
+                    "200": {
+                        "$ref": "#/components/responses/display-api_people_starships"
+                    }
+                }
+            }
+        },
+        "/objects/api_planets_species": {
+            "get": {
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/limit"
+                    },
+                    {
+                        "$ref": "#/components/parameters/offset"
+                    },
+                    {
+                        "$ref": "#/components/parameters/order"
+                    }
+                ],
+                "tags": [
+                    "api_planets_species"
+                ],
+                "operationId": "view_api_planets_species",
+                "description": "View list of api_planets_species",
+                "responses": {
+                    "200": {
+                        "$ref": "#/components/responses/view-api_planets_species"
+                    }
+                }
+            }
+        },
+        "/objects/api_planets_species/{id}": {
+            "get": {
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/itemid"
+                    }
+                ],
+                "tags": [
+                    "api_planets_species"
+                ],
+                "operationId": "display_api_planets_species",
+                "description": "Display single api_planets_species",
+                "responses": {
+                    "200": {
+                        "$ref": "#/components/responses/display-api_planets_species"
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "view-objects": {
+                "type": "object",
+                "properties": {
+                    "count": {
+                        "type": "integer"
+                    },
+                    "limit": {
+                        "type": "integer"
+                    },
+                    "offset": {
+                        "type": "integer"
+                    },
+                    "order": {
+                        "type": "string"
+                    },
+                    "items": {
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "properties": {
+                                "objectid": {
+                                    "type": "string"
+                                },
+                                "name": {
+                                    "type": "string"
+                                },
+                                "label": {
+                                    "type": "string"
+                                },
+                                "module_id": {
+                                    "type": "string"
+                                },
+                                "itemtype": {
+                                    "type": "string"
+                                },
+                                "datastore": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "view-sample": {
+                "type": "object",
+                "properties": {
+                    "count": {
+                        "type": "integer"
+                    },
+                    "limit": {
+                        "type": "integer"
+                    },
+                    "offset": {
+                        "type": "integer"
+                    },
+                    "order": {
+                        "type": "string"
+                    },
+                    "items": {
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "properties": {
+                                "name": {
+                                    "type": "string"
+                                },
+                                "age": {
+                                    "type": "integer"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "display-sample": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "age": {
+                        "type": "integer"
+                    },
+                    "location": {
+                        "type": "string"
+                    }
+                }
+            },
+            "view-api_films": {
+                "type": "object",
+                "properties": {
+                    "count": {
+                        "type": "integer"
+                    },
+                    "limit": {
+                        "type": "integer"
+                    },
+                    "offset": {
+                        "type": "integer"
+                    },
+                    "order": {
+                        "type": "string"
+                    },
+                    "items": {
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "properties": {
+                                "id": {
+                                    "type": "integer"
+                                },
+                                "title": {
+                                    "type": "string"
+                                },
+                                "episode_id": {
+                                    "type": "integer"
+                                },
+                                "director": {
+                                    "type": "string"
+                                },
+                                "producer": {
+                                    "type": "string"
+                                },
+                                "release_date": {
+                                    "type": "string"
+                                },
+                                "url": {
+                                    "type": "string"
+                                },
+                                "created": {
+                                    "type": "string"
+                                },
+                                "edited": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "display-api_films": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer"
+                    },
+                    "title": {
+                        "type": "string"
+                    },
+                    "episode_id": {
+                        "type": "integer"
+                    },
+                    "opening_crawl": {
+                        "type": "string"
+                    },
+                    "director": {
+                        "type": "string"
+                    },
+                    "producer": {
+                        "type": "string"
+                    },
+                    "release_date": {
+                        "type": "string"
+                    },
+                    "characters": {
+                        "type": "string"
+                    },
+                    "planets": {
+                        "type": "string"
+                    },
+                    "starships": {
+                        "type": "string"
+                    },
+                    "vehicles": {
+                        "type": "string"
+                    },
+                    "species": {
+                        "type": "string"
+                    },
+                    "url": {
+                        "type": "string"
+                    },
+                    "created": {
+                        "type": "string"
+                    },
+                    "edited": {
+                        "type": "string"
+                    }
+                }
+            },
+            "view-api_people": {
+                "type": "object",
+                "properties": {
+                    "count": {
+                        "type": "integer"
+                    },
+                    "limit": {
+                        "type": "integer"
+                    },
+                    "offset": {
+                        "type": "integer"
+                    },
+                    "order": {
+                        "type": "string"
+                    },
+                    "items": {
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "properties": {
+                                "id": {
+                                    "type": "integer"
+                                },
+                                "name": {
+                                    "type": "string"
+                                },
+                                "height": {
+                                    "type": "string"
+                                },
+                                "mass": {
+                                    "type": "string"
+                                },
+                                "hair_color": {
+                                    "type": "string"
+                                },
+                                "skin_color": {
+                                    "type": "string"
+                                },
+                                "eye_color": {
+                                    "type": "string"
+                                },
+                                "birth_year": {
+                                    "type": "string"
+                                },
+                                "gender": {
+                                    "type": "string"
+                                },
+                                "homeworld": {
+                                    "type": "string"
+                                },
+                                "url": {
+                                    "type": "string"
+                                },
+                                "created": {
+                                    "type": "string"
+                                },
+                                "edited": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "display-api_people": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "height": {
+                        "type": "string"
+                    },
+                    "mass": {
+                        "type": "string"
+                    },
+                    "hair_color": {
+                        "type": "string"
+                    },
+                    "skin_color": {
+                        "type": "string"
+                    },
+                    "eye_color": {
+                        "type": "string"
+                    },
+                    "birth_year": {
+                        "type": "string"
+                    },
+                    "gender": {
+                        "type": "string"
+                    },
+                    "homeworld": {
+                        "type": "string"
+                    },
+                    "films": {
+                        "type": "string"
+                    },
+                    "species": {
+                        "type": "string"
+                    },
+                    "vehicles": {
+                        "type": "string"
+                    },
+                    "starships": {
+                        "type": "string"
+                    },
+                    "url": {
+                        "type": "string"
+                    },
+                    "created": {
+                        "type": "string"
+                    },
+                    "edited": {
+                        "type": "string"
+                    }
+                }
+            },
+            "view-api_planets": {
+                "type": "object",
+                "properties": {
+                    "count": {
+                        "type": "integer"
+                    },
+                    "limit": {
+                        "type": "integer"
+                    },
+                    "offset": {
+                        "type": "integer"
+                    },
+                    "order": {
+                        "type": "string"
+                    },
+                    "items": {
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "properties": {
+                                "id": {
+                                    "type": "integer"
+                                },
+                                "name": {
+                                    "type": "string"
+                                },
+                                "diameter": {
+                                    "type": "string"
+                                },
+                                "rotation_period": {
+                                    "type": "string"
+                                },
+                                "orbital_period": {
+                                    "type": "string"
+                                },
+                                "gravity": {
+                                    "type": "string"
+                                },
+                                "population": {
+                                    "type": "string"
+                                },
+                                "climate": {
+                                    "type": "string"
+                                },
+                                "terrain": {
+                                    "type": "string"
+                                },
+                                "surface_water": {
+                                    "type": "string"
+                                },
+                                "url": {
+                                    "type": "string"
+                                },
+                                "created": {
+                                    "type": "string"
+                                },
+                                "edited": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "display-api_planets": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "diameter": {
+                        "type": "string"
+                    },
+                    "rotation_period": {
+                        "type": "string"
+                    },
+                    "orbital_period": {
+                        "type": "string"
+                    },
+                    "gravity": {
+                        "type": "string"
+                    },
+                    "population": {
+                        "type": "string"
+                    },
+                    "climate": {
+                        "type": "string"
+                    },
+                    "terrain": {
+                        "type": "string"
+                    },
+                    "surface_water": {
+                        "type": "string"
+                    },
+                    "films": {
+                        "type": "string"
+                    },
+                    "residents": {
+                        "type": "string"
+                    },
+                    "url": {
+                        "type": "string"
+                    },
+                    "created": {
+                        "type": "string"
+                    },
+                    "edited": {
+                        "type": "string"
+                    }
+                }
+            },
+            "view-api_species": {
+                "type": "object",
+                "properties": {
+                    "count": {
+                        "type": "integer"
+                    },
+                    "limit": {
+                        "type": "integer"
+                    },
+                    "offset": {
+                        "type": "integer"
+                    },
+                    "order": {
+                        "type": "string"
+                    },
+                    "items": {
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "properties": {
+                                "id": {
+                                    "type": "integer"
+                                },
+                                "name": {
+                                    "type": "string"
+                                },
+                                "classification": {
+                                    "type": "string"
+                                },
+                                "designation": {
+                                    "type": "string"
+                                },
+                                "average_height": {
+                                    "type": "string"
+                                },
+                                "average_lifespan": {
+                                    "type": "string"
+                                },
+                                "hair_colors": {
+                                    "type": "string"
+                                },
+                                "skin_colors": {
+                                    "type": "string"
+                                },
+                                "eye_colors": {
+                                    "type": "string"
+                                },
+                                "homeworld": {
+                                    "type": "string"
+                                },
+                                "language": {
+                                    "type": "string"
+                                },
+                                "url": {
+                                    "type": "string"
+                                },
+                                "created": {
+                                    "type": "string"
+                                },
+                                "edited": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "display-api_species": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "classification": {
+                        "type": "string"
+                    },
+                    "designation": {
+                        "type": "string"
+                    },
+                    "average_height": {
+                        "type": "string"
+                    },
+                    "average_lifespan": {
+                        "type": "string"
+                    },
+                    "hair_colors": {
+                        "type": "string"
+                    },
+                    "skin_colors": {
+                        "type": "string"
+                    },
+                    "eye_colors": {
+                        "type": "string"
+                    },
+                    "homeworld": {
+                        "type": "string"
+                    },
+                    "language": {
+                        "type": "string"
+                    },
+                    "people": {
+                        "type": "string"
+                    },
+                    "films": {
+                        "type": "string"
+                    },
+                    "url": {
+                        "type": "string"
+                    },
+                    "created": {
+                        "type": "string"
+                    },
+                    "edited": {
+                        "type": "string"
+                    }
+                }
+            },
+            "view-api_starships": {
+                "type": "object",
+                "properties": {
+                    "count": {
+                        "type": "integer"
+                    },
+                    "limit": {
+                        "type": "integer"
+                    },
+                    "offset": {
+                        "type": "integer"
+                    },
+                    "order": {
+                        "type": "string"
+                    },
+                    "items": {
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "properties": {
+                                "id": {
+                                    "type": "integer"
+                                },
+                                "name": {
+                                    "type": "string"
+                                },
+                                "model": {
+                                    "type": "string"
+                                },
+                                "starship_class": {
+                                    "type": "string"
+                                },
+                                "manufacturer": {
+                                    "type": "string"
+                                },
+                                "cost_in_credits": {
+                                    "type": "string"
+                                },
+                                "length": {
+                                    "type": "string"
+                                },
+                                "crew": {
+                                    "type": "string"
+                                },
+                                "passengers": {
+                                    "type": "string"
+                                },
+                                "max_atmosphering_speed": {
+                                    "type": "string"
+                                },
+                                "hyperdrive_rating": {
+                                    "type": "string"
+                                },
+                                "MGLT": {
+                                    "type": "string"
+                                },
+                                "cargo_capacity": {
+                                    "type": "string"
+                                },
+                                "consumables": {
+                                    "type": "string"
+                                },
+                                "url": {
+                                    "type": "string"
+                                },
+                                "created": {
+                                    "type": "string"
+                                },
+                                "edited": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "display-api_starships": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "model": {
+                        "type": "string"
+                    },
+                    "starship_class": {
+                        "type": "string"
+                    },
+                    "manufacturer": {
+                        "type": "string"
+                    },
+                    "cost_in_credits": {
+                        "type": "string"
+                    },
+                    "length": {
+                        "type": "string"
+                    },
+                    "crew": {
+                        "type": "string"
+                    },
+                    "passengers": {
+                        "type": "string"
+                    },
+                    "max_atmosphering_speed": {
+                        "type": "string"
+                    },
+                    "hyperdrive_rating": {
+                        "type": "string"
+                    },
+                    "MGLT": {
+                        "type": "string"
+                    },
+                    "cargo_capacity": {
+                        "type": "string"
+                    },
+                    "consumables": {
+                        "type": "string"
+                    },
+                    "films": {
+                        "type": "string"
+                    },
+                    "pilots": {
+                        "type": "string"
+                    },
+                    "url": {
+                        "type": "string"
+                    },
+                    "created": {
+                        "type": "string"
+                    },
+                    "edited": {
+                        "type": "string"
+                    }
+                }
+            },
+            "view-api_vehicles": {
+                "type": "object",
+                "properties": {
+                    "count": {
+                        "type": "integer"
+                    },
+                    "limit": {
+                        "type": "integer"
+                    },
+                    "offset": {
+                        "type": "integer"
+                    },
+                    "order": {
+                        "type": "string"
+                    },
+                    "items": {
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "properties": {
+                                "id": {
+                                    "type": "integer"
+                                },
+                                "name": {
+                                    "type": "string"
+                                },
+                                "model": {
+                                    "type": "string"
+                                },
+                                "vehicle_class": {
+                                    "type": "string"
+                                },
+                                "manufacturer": {
+                                    "type": "string"
+                                },
+                                "cost_in_credits": {
+                                    "type": "string"
+                                },
+                                "length": {
+                                    "type": "string"
+                                },
+                                "crew": {
+                                    "type": "string"
+                                },
+                                "passengers": {
+                                    "type": "string"
+                                },
+                                "max_atmosphering_speed": {
+                                    "type": "string"
+                                },
+                                "cargo_capacity": {
+                                    "type": "string"
+                                },
+                                "consumables": {
+                                    "type": "string"
+                                },
+                                "url": {
+                                    "type": "string"
+                                },
+                                "created": {
+                                    "type": "string"
+                                },
+                                "edited": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "display-api_vehicles": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "model": {
+                        "type": "string"
+                    },
+                    "vehicle_class": {
+                        "type": "string"
+                    },
+                    "manufacturer": {
+                        "type": "string"
+                    },
+                    "cost_in_credits": {
+                        "type": "string"
+                    },
+                    "length": {
+                        "type": "string"
+                    },
+                    "crew": {
+                        "type": "string"
+                    },
+                    "passengers": {
+                        "type": "string"
+                    },
+                    "max_atmosphering_speed": {
+                        "type": "string"
+                    },
+                    "cargo_capacity": {
+                        "type": "string"
+                    },
+                    "consumables": {
+                        "type": "string"
+                    },
+                    "films": {
+                        "type": "string"
+                    },
+                    "pilots": {
+                        "type": "string"
+                    },
+                    "url": {
+                        "type": "string"
+                    },
+                    "created": {
+                        "type": "string"
+                    },
+                    "edited": {
+                        "type": "string"
+                    }
+                }
+            },
+            "view-api_films_people": {
+                "type": "object",
+                "properties": {
+                    "count": {
+                        "type": "integer"
+                    },
+                    "limit": {
+                        "type": "integer"
+                    },
+                    "offset": {
+                        "type": "integer"
+                    },
+                    "order": {
+                        "type": "string"
+                    },
+                    "items": {
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "properties": {
+                                "id": {
+                                    "type": "integer"
+                                },
+                                "films_id": {
+                                    "type": "string"
+                                },
+                                "people_id": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "display-api_films_people": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer"
+                    },
+                    "films_id": {
+                        "type": "string"
+                    },
+                    "people_id": {
+                        "type": "string"
+                    }
+                }
+            },
+            "view-api_films_planets": {
+                "type": "object",
+                "properties": {
+                    "count": {
+                        "type": "integer"
+                    },
+                    "limit": {
+                        "type": "integer"
+                    },
+                    "offset": {
+                        "type": "integer"
+                    },
+                    "order": {
+                        "type": "string"
+                    },
+                    "items": {
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "properties": {
+                                "id": {
+                                    "type": "integer"
+                                },
+                                "films_id": {
+                                    "type": "string"
+                                },
+                                "planets_id": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "display-api_films_planets": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer"
+                    },
+                    "films_id": {
+                        "type": "string"
+                    },
+                    "planets_id": {
+                        "type": "string"
+                    }
+                }
+            },
+            "view-api_films_starships": {
+                "type": "object",
+                "properties": {
+                    "count": {
+                        "type": "integer"
+                    },
+                    "limit": {
+                        "type": "integer"
+                    },
+                    "offset": {
+                        "type": "integer"
+                    },
+                    "order": {
+                        "type": "string"
+                    },
+                    "items": {
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "properties": {
+                                "id": {
+                                    "type": "integer"
+                                },
+                                "films_id": {
+                                    "type": "string"
+                                },
+                                "starships_id": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "display-api_films_starships": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer"
+                    },
+                    "films_id": {
+                        "type": "string"
+                    },
+                    "starships_id": {
+                        "type": "string"
+                    }
+                }
+            },
+            "view-api_films_vehicles": {
+                "type": "object",
+                "properties": {
+                    "count": {
+                        "type": "integer"
+                    },
+                    "limit": {
+                        "type": "integer"
+                    },
+                    "offset": {
+                        "type": "integer"
+                    },
+                    "order": {
+                        "type": "string"
+                    },
+                    "items": {
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "properties": {
+                                "id": {
+                                    "type": "integer"
+                                },
+                                "films_id": {
+                                    "type": "string"
+                                },
+                                "vehicles_id": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "display-api_films_vehicles": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer"
+                    },
+                    "films_id": {
+                        "type": "string"
+                    },
+                    "vehicles_id": {
+                        "type": "string"
+                    }
+                }
+            },
+            "view-api_films_species": {
+                "type": "object",
+                "properties": {
+                    "count": {
+                        "type": "integer"
+                    },
+                    "limit": {
+                        "type": "integer"
+                    },
+                    "offset": {
+                        "type": "integer"
+                    },
+                    "order": {
+                        "type": "string"
+                    },
+                    "items": {
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "properties": {
+                                "id": {
+                                    "type": "integer"
+                                },
+                                "films_id": {
+                                    "type": "string"
+                                },
+                                "species_id": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "display-api_films_species": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer"
+                    },
+                    "films_id": {
+                        "type": "string"
+                    },
+                    "species_id": {
+                        "type": "string"
+                    }
+                }
+            },
+            "view-api_people_species": {
+                "type": "object",
+                "properties": {
+                    "count": {
+                        "type": "integer"
+                    },
+                    "limit": {
+                        "type": "integer"
+                    },
+                    "offset": {
+                        "type": "integer"
+                    },
+                    "order": {
+                        "type": "string"
+                    },
+                    "items": {
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "properties": {
+                                "id": {
+                                    "type": "integer"
+                                },
+                                "people_id": {
+                                    "type": "string"
+                                },
+                                "species_id": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "display-api_people_species": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer"
+                    },
+                    "people_id": {
+                        "type": "string"
+                    },
+                    "species_id": {
+                        "type": "string"
+                    }
+                }
+            },
+            "view-api_people_planets": {
+                "type": "object",
+                "properties": {
+                    "count": {
+                        "type": "integer"
+                    },
+                    "limit": {
+                        "type": "integer"
+                    },
+                    "offset": {
+                        "type": "integer"
+                    },
+                    "order": {
+                        "type": "string"
+                    },
+                    "items": {
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "properties": {
+                                "id": {
+                                    "type": "integer"
+                                },
+                                "people_id": {
+                                    "type": "string"
+                                },
+                                "planets_id": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "display-api_people_planets": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer"
+                    },
+                    "people_id": {
+                        "type": "string"
+                    },
+                    "planets_id": {
+                        "type": "string"
+                    }
+                }
+            },
+            "view-api_people_vehicles": {
+                "type": "object",
+                "properties": {
+                    "count": {
+                        "type": "integer"
+                    },
+                    "limit": {
+                        "type": "integer"
+                    },
+                    "offset": {
+                        "type": "integer"
+                    },
+                    "order": {
+                        "type": "string"
+                    },
+                    "items": {
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "properties": {
+                                "id": {
+                                    "type": "integer"
+                                },
+                                "people_id": {
+                                    "type": "string"
+                                },
+                                "vehicles_id": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "display-api_people_vehicles": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer"
+                    },
+                    "people_id": {
+                        "type": "string"
+                    },
+                    "vehicles_id": {
+                        "type": "string"
+                    }
+                }
+            },
+            "view-api_people_starships": {
+                "type": "object",
+                "properties": {
+                    "count": {
+                        "type": "integer"
+                    },
+                    "limit": {
+                        "type": "integer"
+                    },
+                    "offset": {
+                        "type": "integer"
+                    },
+                    "order": {
+                        "type": "string"
+                    },
+                    "items": {
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "properties": {
+                                "id": {
+                                    "type": "integer"
+                                },
+                                "people_id": {
+                                    "type": "string"
+                                },
+                                "starships_id": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "display-api_people_starships": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer"
+                    },
+                    "people_id": {
+                        "type": "string"
+                    },
+                    "starships_id": {
+                        "type": "string"
+                    }
+                }
+            },
+            "view-api_planets_species": {
+                "type": "object",
+                "properties": {
+                    "count": {
+                        "type": "integer"
+                    },
+                    "limit": {
+                        "type": "integer"
+                    },
+                    "offset": {
+                        "type": "integer"
+                    },
+                    "order": {
+                        "type": "string"
+                    },
+                    "items": {
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "properties": {
+                                "id": {
+                                    "type": "integer"
+                                },
+                                "planets_id": {
+                                    "type": "string"
+                                },
+                                "species_id": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "display-api_planets_species": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer"
+                    },
+                    "planets_id": {
+                        "type": "string"
+                    },
+                    "species_id": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        "responses": {
+            "view-objects": {
+                "description": "View list of objects objects",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "$ref": "#/components/schemas/view-objects"
+                        }
+                    }
+                }
+            },
+            "view-sample": {
+                "description": "View list of sample objects",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "$ref": "#/components/schemas/view-sample"
+                        }
+                    }
+                }
+            },
+            "display-sample": {
+                "description": "Display single sample object",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "$ref": "#/components/schemas/display-sample"
+                        }
+                    }
+                }
+            },
+            "view-api_films": {
+                "description": "View list of api_films objects",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "$ref": "#/components/schemas/view-api_films"
+                        }
+                    }
+                }
+            },
+            "display-api_films": {
+                "description": "Display single api_films object",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "$ref": "#/components/schemas/display-api_films"
+                        }
+                    }
+                }
+            },
+            "view-api_people": {
+                "description": "View list of api_people objects",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "$ref": "#/components/schemas/view-api_people"
+                        }
+                    }
+                }
+            },
+            "display-api_people": {
+                "description": "Display single api_people object",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "$ref": "#/components/schemas/display-api_people"
+                        }
+                    }
+                }
+            },
+            "view-api_planets": {
+                "description": "View list of api_planets objects",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "$ref": "#/components/schemas/view-api_planets"
+                        }
+                    }
+                }
+            },
+            "display-api_planets": {
+                "description": "Display single api_planets object",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "$ref": "#/components/schemas/display-api_planets"
+                        }
+                    }
+                }
+            },
+            "view-api_species": {
+                "description": "View list of api_species objects",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "$ref": "#/components/schemas/view-api_species"
+                        }
+                    }
+                }
+            },
+            "display-api_species": {
+                "description": "Display single api_species object",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "$ref": "#/components/schemas/display-api_species"
+                        }
+                    }
+                }
+            },
+            "view-api_starships": {
+                "description": "View list of api_starships objects",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "$ref": "#/components/schemas/view-api_starships"
+                        }
+                    }
+                }
+            },
+            "display-api_starships": {
+                "description": "Display single api_starships object",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "$ref": "#/components/schemas/display-api_starships"
+                        }
+                    }
+                }
+            },
+            "view-api_vehicles": {
+                "description": "View list of api_vehicles objects",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "$ref": "#/components/schemas/view-api_vehicles"
+                        }
+                    }
+                }
+            },
+            "display-api_vehicles": {
+                "description": "Display single api_vehicles object",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "$ref": "#/components/schemas/display-api_vehicles"
+                        }
+                    }
+                }
+            },
+            "view-api_films_people": {
+                "description": "View list of api_films_people objects",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "$ref": "#/components/schemas/view-api_films_people"
+                        }
+                    }
+                }
+            },
+            "display-api_films_people": {
+                "description": "Display single api_films_people object",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "$ref": "#/components/schemas/display-api_films_people"
+                        }
+                    }
+                }
+            },
+            "view-api_films_planets": {
+                "description": "View list of api_films_planets objects",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "$ref": "#/components/schemas/view-api_films_planets"
+                        }
+                    }
+                }
+            },
+            "display-api_films_planets": {
+                "description": "Display single api_films_planets object",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "$ref": "#/components/schemas/display-api_films_planets"
+                        }
+                    }
+                }
+            },
+            "view-api_films_starships": {
+                "description": "View list of api_films_starships objects",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "$ref": "#/components/schemas/view-api_films_starships"
+                        }
+                    }
+                }
+            },
+            "display-api_films_starships": {
+                "description": "Display single api_films_starships object",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "$ref": "#/components/schemas/display-api_films_starships"
+                        }
+                    }
+                }
+            },
+            "view-api_films_vehicles": {
+                "description": "View list of api_films_vehicles objects",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "$ref": "#/components/schemas/view-api_films_vehicles"
+                        }
+                    }
+                }
+            },
+            "display-api_films_vehicles": {
+                "description": "Display single api_films_vehicles object",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "$ref": "#/components/schemas/display-api_films_vehicles"
+                        }
+                    }
+                }
+            },
+            "view-api_films_species": {
+                "description": "View list of api_films_species objects",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "$ref": "#/components/schemas/view-api_films_species"
+                        }
+                    }
+                }
+            },
+            "display-api_films_species": {
+                "description": "Display single api_films_species object",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "$ref": "#/components/schemas/display-api_films_species"
+                        }
+                    }
+                }
+            },
+            "view-api_people_species": {
+                "description": "View list of api_people_species objects",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "$ref": "#/components/schemas/view-api_people_species"
+                        }
+                    }
+                }
+            },
+            "display-api_people_species": {
+                "description": "Display single api_people_species object",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "$ref": "#/components/schemas/display-api_people_species"
+                        }
+                    }
+                }
+            },
+            "view-api_people_planets": {
+                "description": "View list of api_people_planets objects",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "$ref": "#/components/schemas/view-api_people_planets"
+                        }
+                    }
+                }
+            },
+            "display-api_people_planets": {
+                "description": "Display single api_people_planets object",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "$ref": "#/components/schemas/display-api_people_planets"
+                        }
+                    }
+                }
+            },
+            "view-api_people_vehicles": {
+                "description": "View list of api_people_vehicles objects",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "$ref": "#/components/schemas/view-api_people_vehicles"
+                        }
+                    }
+                }
+            },
+            "display-api_people_vehicles": {
+                "description": "Display single api_people_vehicles object",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "$ref": "#/components/schemas/display-api_people_vehicles"
+                        }
+                    }
+                }
+            },
+            "view-api_people_starships": {
+                "description": "View list of api_people_starships objects",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "$ref": "#/components/schemas/view-api_people_starships"
+                        }
+                    }
+                }
+            },
+            "display-api_people_starships": {
+                "description": "Display single api_people_starships object",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "$ref": "#/components/schemas/display-api_people_starships"
+                        }
+                    }
+                }
+            },
+            "view-api_planets_species": {
+                "description": "View list of api_planets_species objects",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "$ref": "#/components/schemas/view-api_planets_species"
+                        }
+                    }
+                }
+            },
+            "display-api_planets_species": {
+                "description": "Display single api_planets_species object",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "$ref": "#/components/schemas/display-api_planets_species"
+                        }
+                    }
+                }
+            }
+        },
+        "parameters": {
+            "itemid": {
+                "name": "id",
+                "in": "path",
+                "schema": {
+                    "type": "string"
+                },
+                "description": "itemid value",
+                "required": true
+            },
+            "limit": {
+                "name": "limit",
+                "in": "query",
+                "schema": {
+                    "type": "integer",
+                    "default": 20
+                },
+                "description": "Number of items to return"
+            },
+            "offset": {
+                "name": "offset",
+                "in": "query",
+                "schema": {
+                    "type": "integer",
+                    "default": 0
+                },
+                "description": "Offset to start items from"
+            },
+            "order": {
+                "name": "order",
+                "in": "query",
+                "schema": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "description": "Property to sort on and optional direction (comma separated)"
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "objects",
+            "description": "objects operations"
+        },
+        {
+            "name": "sample",
+            "description": "sample operations"
+        },
+        {
+            "name": "api_films",
+            "description": "api_films operations"
+        },
+        {
+            "name": "api_people",
+            "description": "api_people operations"
+        },
+        {
+            "name": "api_planets",
+            "description": "api_planets operations"
+        },
+        {
+            "name": "api_species",
+            "description": "api_species operations"
+        },
+        {
+            "name": "api_starships",
+            "description": "api_starships operations"
+        },
+        {
+            "name": "api_vehicles",
+            "description": "api_vehicles operations"
+        },
+        {
+            "name": "api_films_people",
+            "description": "api_films_people operations"
+        },
+        {
+            "name": "api_films_planets",
+            "description": "api_films_planets operations"
+        },
+        {
+            "name": "api_films_starships",
+            "description": "api_films_starships operations"
+        },
+        {
+            "name": "api_films_vehicles",
+            "description": "api_films_vehicles operations"
+        },
+        {
+            "name": "api_films_species",
+            "description": "api_films_species operations"
+        },
+        {
+            "name": "api_people_species",
+            "description": "api_people_species operations"
+        },
+        {
+            "name": "api_people_planets",
+            "description": "api_people_planets operations"
+        },
+        {
+            "name": "api_people_vehicles",
+            "description": "api_people_vehicles operations"
+        },
+        {
+            "name": "api_people_starships",
+            "description": "api_people_starships operations"
+        },
+        {
+            "name": "api_planets_species",
+            "description": "api_planets_species operations"
+        }
+    ]
+}
