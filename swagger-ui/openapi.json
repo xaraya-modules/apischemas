@@ -6,7 +6,7 @@
     },
     "servers": [
         {
-            "url": "https://owncloud.mikespub.net/bermuda/api.php/v1"
+            "url": "https://owncloud.mikespub.net/bermuda/rst.php/v1"
         }
     ],
     "paths": {
