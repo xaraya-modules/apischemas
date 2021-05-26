@@ -26,7 +26,7 @@ include 'php-crud-api.include.php';
         'middlewares' => 'cors, authorization',
         'authorization.tableHandler' => function ($operation, $tableName) {
             return ($operation == 'list' || $operation == 'read' || $operation == 'document' || $operation == 'reflect');
-	},
+        },
         'authorization.columnHandler' => function ($operation, $tableName, $columnName) {
             return !($tableName == 'xar_roles' && ($columnName == 'pass' || $columnName == 'email'));
         },
