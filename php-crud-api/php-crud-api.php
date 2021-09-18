@@ -1,4 +1,5 @@
 <?php
+
 // 1. Download PHP-CRUD-API api.include.php file from https://github.com/mevdschee/php-crud-api:
 // $ wget https://github.com/mevdschee/php-crud-api/raw/master/api.include.php -O php-crud-api.include.php
 // 2. Configure or customize $config below

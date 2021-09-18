@@ -15,11 +15,11 @@ sys::import('modules.dynamicdata.class.objects.master');
 **/
 class xarAPISchemas_User
 {
-    public static function init(array $args = array())
+    public static function init(array $args = [])
     {
     }
 
-    public static function main(array $args = array())
+    public static function main(array $args = [])
     {
         return $args;
     }

@@ -18,19 +18,19 @@ class xarAPISchemas_Import
     protected static $dd_prefix = 'api_';
     protected static $moduleid = 18252;
     protected static $itemtype = 0;
-    protected static $proptype_ids = array();
+    protected static $proptype_ids = [];
     protected static $dataproperty = null;
     protected static $schemas;
     protected static $fixtures;
     protected static $mapping;
-    protected static $alias = array();
-    protected static $links = array();
-    protected static $labels = array();
-    protected static $models = array();
-    protected static $inherit = array();
-    protected static $objects = array();
+    protected static $alias = [];
+    protected static $links = [];
+    protected static $labels = [];
+    protected static $models = [];
+    protected static $inherit = [];
+    protected static $objects = [];
 
-    public static function init(array $args = array())
+    public static function init(array $args = [])
     {
         if (isset(self::$schemas)) {
             return;
@@ -57,7 +57,7 @@ class xarAPISchemas_Import
     public static function get_objects()
     {
         $objects = DataObjectMaster::getObjects();
-        self::$objects = array();
+        self::$objects = [];
         foreach ($objects as $objectid => $objectinfo) {
             if (intval($objectinfo['moduleid']) !== self::$moduleid) {
                 continue;
@@ -91,11 +91,11 @@ class xarAPISchemas_Import
     public static function get_proptype_ids()
     {
         $proptypes = DataPropertyMaster::getPropertyTypes();
-        self::$proptype_ids = array();
+        self::$proptype_ids = [];
         foreach ($proptypes as $typeid => $proptype) {
             self::$proptype_ids[$proptype['name']] = $typeid;
         }
-        self::$dataproperty = DataObjectMaster::getObject(array('name' => 'properties'));
+        self::$dataproperty = DataObjectMaster::getObject(['name' => 'properties']);
         return self::$proptype_ids;
     }
 
@@ -109,27 +109,27 @@ class xarAPISchemas_Import
         echo 'Creating object ' . $objectname . "\n";
         self::$itemtype += 1;
         $objectid = DataObjectMaster::createObject(
-            array(
+            [
                 'name' => $objectname,
                 'label' => $info->title,
                 'moduleid' => self::$moduleid,
-                'itemtype' => self::$itemtype
-            )
+                'itemtype' => self::$itemtype,
+            ]
         );
         $name = 'id';
         $label = 'Id';
         $type = self::$proptype_ids['itemid'];
         $seq = 1;
         $propid = self::$dataproperty->createItem(
-            array(
+            [
                 'itemid' => 0,
                 'objectid' => $objectid,
                 'name' => $name,
                 'label' => $label,
                 'type' => $type,
                 'defaultvalue' => '',
-                'seq' => $seq
-            )
+                'seq' => $seq,
+            ]
         );
         $source = $info->name;
         foreach ($info->properties as $name => $property) {
@@ -150,7 +150,7 @@ class xarAPISchemas_Import
                     if (array_key_exists($source, self::$links) && array_key_exists($name, self::$links[$source])) {
                         $type = self::$proptype_ids['deferitem'];
                         $to = self::$links[$source][$name];
-                        list($target, $field) = explode('.', $to);
+                        [$target, $field] = explode('.', $to);
                         $default = 'dataobject:' . self::$dd_prefix . $target . '.' . self::$labels[$target];
                     }
                     break;
@@ -162,9 +162,9 @@ class xarAPISchemas_Import
                     if (array_key_exists($source, self::$links) && array_key_exists($name, self::$links[$source])) {
                         $type = self::$proptype_ids['defermany'];
                         $to = self::$links[$source][$name];
-                        list($target, $field) = explode('.', $to);
+                        [$target, $field] = explode('.', $to);
                         // @checkme we only create one many-to-many link object sorted by name
-                        $tosort = array($source, $target);
+                        $tosort = [$source, $target];
                         sort($tosort);
                         $linkname = self::$dd_prefix . implode('_', $tosort);
                         $default = 'linkobject:' . $linkname . '.' . $source . '_id.' . $target . '_id:' . self::$dd_prefix . $target . '.' . self::$labels[$target];
@@ -185,7 +185,7 @@ class xarAPISchemas_Import
             $label = ucwords(str_replace('_', ' ', $name));
             $seq += 1;
             $propid = self::$dataproperty->createItem(
-                array(
+                [
                     'itemid' => 0,
                     'objectid' => $objectid,
                     'name' => $name,
@@ -193,8 +193,8 @@ class xarAPISchemas_Import
                     'type' => $type,
                     'defaultvalue' => $default,
                     'status' => $status,
-                    'seq' => $seq
-                )
+                    'seq' => $seq,
+                ]
             );
         }
         return $objectid;
@@ -204,10 +204,10 @@ class xarAPISchemas_Import
     {
         // @checkme we only create one many-to-many link object sorted by name
         ksort(self::$links);
-        $seen = array();
+        $seen = [];
         foreach (self::$links as $source => $fields) {
             foreach ($fields as $from => $to) {
-                list($target, $field) = explode('.', $to);
+                [$target, $field] = explode('.', $to);
                 $check = "$target:$field=$source:$from";
                 if (in_array($check, $seen)) {
                     continue;
@@ -231,57 +231,57 @@ class xarAPISchemas_Import
         echo 'Creating object ' . $linkname . "\n";
         self::$itemtype += 1;
         $objectid = DataObjectMaster::createObject(
-            array(
+            [
                 'name' => $linkname,
                 'label' => $title,
                 'moduleid' => self::$moduleid,
-                'itemtype' => self::$itemtype
-            )
+                'itemtype' => self::$itemtype,
+            ]
         );
         $name = 'id';
         $label = 'Id';
         $type = self::$proptype_ids['itemid'];
         $seq = 1;
         $propid = self::$dataproperty->createItem(
-            array(
+            [
                 'itemid' => 0,
                 'objectid' => $objectid,
                 'name' => $name,
                 'label' => $label,
                 'type' => $type,
                 'defaultvalue' => '',
-                'seq' => $seq
-            )
+                'seq' => $seq,
+            ]
         );
         $name = $source . '_id';
         $label = ucfirst($source) . 'Id';
         $type = self::$proptype_ids['deferitem'];
         $seq += 1;
         $propid = self::$dataproperty->createItem(
-            array(
+            [
                 'itemid' => 0,
                 'objectid' => $objectid,
                 'name' => $name,
                 'label' => $label,
                 'type' => $type,
                 'defaultvalue' => 'dataobject:' . self::$dd_prefix . $source . '.' . self::$labels[$source],
-                'seq' => $seq
-            )
+                'seq' => $seq,
+            ]
         );
         $name = $target . '_id';
         $label = ucfirst($target) . 'Id';
         $type = self::$proptype_ids['deferitem'];
         $seq += 1;
         $propid = self::$dataproperty->createItem(
-            array(
+            [
                 'itemid' => 0,
                 'objectid' => $objectid,
                 'name' => $name,
                 'label' => $label,
                 'type' => $type,
                 'defaultvalue' => 'dataobject:' . self::$dd_prefix . $target . '.' . self::$labels[$target],
-                'seq' => $seq
-            )
+                'seq' => $seq,
+            ]
         );
         return $objectid;
     }
@@ -289,7 +289,7 @@ class xarAPISchemas_Import
     public static function load_schemas()
     {
         self::init();
-        $schemas = array();
+        $schemas = [];
         foreach (scandir(self::$schemas) as $file) {
             if (strpos($file, '.json') === false) {
                 continue;
@@ -334,7 +334,7 @@ class xarAPISchemas_Import
         self::init();
         foreach (self::$objects as $objectname => $info) {
             echo 'Deleting object ' . $objectname . "\n";
-            $result = DataObjectMaster::deleteObject(array('name' => $objectname));
+            $result = DataObjectMaster::deleteObject(['name' => $objectname]);
             if (empty($result)) {
                 throw new Exception('Error deleting object ' . $objectname);
             }
@@ -344,7 +344,7 @@ class xarAPISchemas_Import
     public static function load_items()
     {
         self::init();
-        $data = array();
+        $data = [];
         foreach (scandir(self::$fixtures) as $file) {
             if (strpos($file, '.json') === false) {
                 continue;
@@ -353,7 +353,7 @@ class xarAPISchemas_Import
             //self::dump_items($items);
             foreach (array_keys($items) as $model) {
                 if (!array_key_exists($model, $data)) {
-                    $data[$model] = array();
+                    $data[$model] = [];
                 }
                 $data[$model] = array_merge($data[$model], $items[$model]);
             }
@@ -377,21 +377,21 @@ class xarAPISchemas_Import
                 throw new Exception('Unknown object: ' . $objectname);
             }
             echo 'Loading items for object ' . $objectname . ': ' . count($items) . "\n";
-            $dataobject = DataObjectMaster::getObject(array('name' => $objectname));
-            $datalinks = array();
-            $datatarget = array();
+            $dataobject = DataObjectMaster::getObject(['name' => $objectname]);
+            $datalinks = [];
+            $datatarget = [];
             foreach (self::$links[$schema] as $from => $to) {
-                list($target, $field) = explode('.', $to);
+                [$target, $field] = explode('.', $to);
                 // @checkme we only create one many-to-many link object sorted by name
-                $tosort = array($schema, $target);
+                $tosort = [$schema, $target];
                 sort($tosort);
                 $linkname = self::$dd_prefix . implode('_', $tosort);
                 echo 'Adding links for ' . $from . ' in ' . $linkname . "\n";
-                $datalinks[$from] = DataObjectMaster::getObject(array('name' => $linkname));
+                $datalinks[$from] = DataObjectMaster::getObject(['name' => $linkname]);
                 $datatarget[$from] = $target;
             }
             // @todo keep array serialized/encoded for now - add relationships later
-            $serialized = array();
+            $serialized = [];
             foreach ($dataobject->properties as $property) {
                 //if ($property->type == self::$proptype_ids['array']) {
                 if ($property->type == self::$proptype_ids['textarea']) {
@@ -411,14 +411,14 @@ class xarAPISchemas_Import
                         $item[$name] = null;
                     } elseif (is_array($item[$name])) {
                         foreach ($item[$name] as $val) {
-                            $link = array('id' => 0, $schema . '_id' => $item['id'], $datatarget[$name] . '_id' => $val);
+                            $link = ['id' => 0, $schema . '_id' => $item['id'], $datatarget[$name] . '_id' => $val];
                             $linkid = $datalinks[$name]->createItem($link);
                         }
                         //$item[$name] = serialize($item[$name]);
                         $item[$name] = json_encode($item[$name]);
                     // @todo add link to one-to-many relationships too, cfr. homeworld
                     } elseif (!empty($item[$name]) && is_numeric($item[$name])) {
-                        $link = array('id' => 0, $schema . '_id' => $item['id'], $datatarget[$name] . '_id' => intval($item[$name]));
+                        $link = ['id' => 0, $schema . '_id' => $item['id'], $datatarget[$name] . '_id' => intval($item[$name])];
                         $linkid = $datalinks[$name]->createItem($link);
                     } else {
                         //throw new Exception('Invalid field ' . $name . '=' . $item[$name] . ' for object ' . $objectname);
@@ -436,10 +436,10 @@ class xarAPISchemas_Import
     {
         $content = file_get_contents(self::$fixtures . '/' . $file);
         $data = json_decode($content);
-        $items = array();
+        $items = [];
         foreach ($data as $item) {
             if (!array_key_exists($item->model, $items)) {
-                $items[$item->model] = array();
+                $items[$item->model] = [];
             }
             if (array_key_exists("pk_" . $item->pk, $items[$item->model])) {
                 throw new Exception('Duplicate item ' . $item->pk . ' for model ' . $item->model);
@@ -463,13 +463,13 @@ class xarAPISchemas_Import
     {
         self::init();
         foreach (self::$objects as $objectname => $info) {
-            $objectlist = DataObjectMaster::getObjectList(array('name' => $objectname));
+            $objectlist = DataObjectMaster::getObjectList(['name' => $objectname]);
             $items = $objectlist->getItems();
             echo 'Deleting items for object ' . $objectname . ': ' . count($items) . "\n";
-            $dataobject = DataObjectMaster::getObject(array('name' => $objectname));
+            $dataobject = DataObjectMaster::getObject(['name' => $objectname]);
             foreach ($items as $itemid => $item) {
                 //echo $itemid . ': ' . json_encode($item) . "\n";
-                $itemid = $dataobject->deleteItem(array('itemid' => $itemid));
+                $itemid = $dataobject->deleteItem(['itemid' => $itemid]);
                 if (empty($itemid)) {
                     throw new Exception('Error deleting itemid ' . $item['id'] . ' for object ' . $objectname);
                 }

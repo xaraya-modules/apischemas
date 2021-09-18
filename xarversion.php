@@ -8,7 +8,7 @@
  * @link https://github.com/mikespub/xaraya-modules
  * @author mikespub
  */
-$modversion = array();
+$modversion = [];
 $modversion['name']           = 'apischemas';
 $modversion['id']             = '18252';
 $modversion['version']        = '2.4.1';
@@ -25,6 +25,6 @@ $modversion['admin']          = false;
 $modversion['user']           = true;
 $modversion['class']          = 'Utility';
 $modversion['category']       = 'Miscellaneous';
-$modversion['securityschema'] = array();
-$modversion['dependency']     = array();
-$modversion['dependencyinfo'] = array();
+$modversion['securityschema'] = [];
+$modversion['dependency']     = [];
+$modversion['dependencyinfo'] = [];

@@ -16,7 +16,7 @@ sys::import('modules.apischemas.class.api_user');
  * @param array $args
  * @return string template output in HTML
  */
-function apischemas_user_main(array $args = array())
+function apischemas_user_main(array $args = [])
 {
     return xarAPISchemas_User::main($args);
 }
