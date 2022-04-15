@@ -2,7 +2,7 @@
     "name": "xaraya/apischemas",
     "type": "xaraya-module",
     "description": "Play with API schemas",
-    "homepage": "https://github.com/mikespub/xaraya-apischemas",
+    "homepage": "https://github.com/xaraya-modules/apischemas",
     "license": "GPL-2.0-or-later",
     "require": {},
     "autoload": {
