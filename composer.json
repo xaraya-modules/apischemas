@@ -4,5 +4,9 @@
     "description": "Play with API schemas",
     "homepage": "https://github.com/mikespub/xaraya-apischemas",
     "license": "GPL-2.0-or-later",
-    "require": {}
+    "require": {},
+    "autoload": {
+        "classmap": ["./"],
+        "exclude-from-classmap": ["/vendor/"]
+    }
 }
