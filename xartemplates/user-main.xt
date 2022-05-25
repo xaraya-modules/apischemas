@@ -16,6 +16,7 @@
             <ul>
                 <li>Try out the <a href="code/modules/apischemas/swagger-ui/">Swagger UI (OpenAPI)</a></li>
                 <li>Try out the <a href="code/modules/apischemas/playground/">GraphQL Playground</a></li>
+                <li>Try out the <a href="code/modules/apischemas/datatables/">DataTables (OpenAPI)</a></li>
             </ul>
         </div>
     </div>
