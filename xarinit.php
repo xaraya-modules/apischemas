@@ -18,7 +18,11 @@
 **/
 function apischemas_init()
 {
-    return true;
+    sys::import('modules.apischemas.class.api_import');
+    //xarAPISchemas_Import::delete_items();
+    //xarAPISchemas_Import::delete_objects();
+    xarAPISchemas_Import::load_schemas();
+    xarAPISchemas_Import::load_items();
 
     // Installation complete; check for upgrades
     return apischemas_upgrade('2.0.0');
@@ -72,5 +76,11 @@ function apischemas_upgrade($oldversion)
  */
 function apischemas_delete()
 {
+    sys::import('modules.apischemas.class.api_import');
+    xarAPISchemas_Import::delete_items();
+    xarAPISchemas_Import::delete_objects();
+    //xarAPISchemas_Import::load_schemas();
+    //xarAPISchemas_Import::load_items();
+
     return true;
 }
