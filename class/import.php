@@ -416,7 +416,7 @@ class xarAPISchemas_Import
                         }
                         //$item[$name] = serialize($item[$name]);
                         $item[$name] = json_encode($item[$name]);
-                    // @todo add link to one-to-many relationships too, cfr. homeworld
+                        // @todo add link to one-to-many relationships too, cfr. homeworld
                     } elseif (!empty($item[$name]) && is_numeric($item[$name])) {
                         $link = ['id' => 0, $schema . '_id' => $item['id'], $datatarget[$name] . '_id' => intval($item[$name])];
                         $linkid = $datalinks[$name]->createItem($link);

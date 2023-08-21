@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xar:template xmlns:xar="http://xaraya.com/2004/blocklayout">
+    <!-- License: GPL http://www.gnu.org/copyleft/gpl.html -->
+    <div class="xar-mod-head">
+        <span class="xar-mod-title">
+            API Schemas
+        </span>
+    </div>
+    <div class="xar-mod-body">
+        <div class="xar-mod-object-head">
+            <h2>Test API Schemas</h2>
+        </div>
+        <div class="xar-mod-object-body">
+            <h3>Info</h3>
+            <ul>
+                <xar:foreach in="$doc['info']" key="$k" value="$v">
+                    <xar:if condition="is_array($v)">
+                        <li>#ucfirst($k)#:
+                            <ul>
+                            <xar:foreach in="$v" key="$key" value="$value">
+                                <li>#ucfirst($key)#: #$value#</li>
+                            </xar:foreach>
+                            </ul>
+                        </li>
+                    <xar:else/>
+                        <li>#ucfirst($k)#: #$v#</li>
+                    </xar:if>
+                </xar:foreach>
+            </ul>
+            <h3>Paths</h3>
+            <ul>
+                <xar:foreach in="$doc['paths']" key="$path" value="$ops">
+                    <li>#$path#:
+                        <ul>
+                        <xar:foreach in="$ops" key="$method" value="$op">
+                            <xar:if condition="$method eq 'get'">
+                                <li><a href="#xarServer::getCurrentURL(['path' => $path])#">#$method#</a> (#$op['operationId']#): #$op['description']#</li>
+                            <xar:else/>
+                                <li>#$method# (#$op['operationId']#): #$op['description']#</li>
+                            </xar:if>
+                        </xar:foreach>
+                        </ul>
+                    </li>
+                </xar:foreach>
+            </ul>
+            <h3>Schemas</h3>
+            <ul>
+                <xar:foreach in="$doc['components']['schemas']" key="$schema" value="$info">
+                    <li>#$schema#:
+                        <ul>
+                        <xar:foreach in="$info['properties']" key="$name" value="$prop">
+                            <li>#$name#: #json_encode($prop)#</li>
+                        </xar:foreach>
+                        </ul>
+                    </li>
+                </xar:foreach>
+            </ul>
+            <h3>Result: #$method# #$path#</h3>
+            <pre>
+            <xar:set name="dummy">var_dump($data)</xar:set>
+            </pre>
+        </div>
+    </div>
+</xar:template>
