@@ -18,9 +18,7 @@ class xarAPISchemas_User
     protected static $moduleid = 18252;
     protected static $objects = [];
 
-    public static function init(array $args = [])
-    {
-    }
+    public static function init(array $args = []) {}
 
     public static function main(array $args = [])
     {
@@ -69,7 +67,7 @@ class xarAPISchemas_User
      *        array    $args['itemids'] array of item ids to get
      * @return array containing the itemlink(s) for the item(s).
      */
-    public static function itemlinks(array $args=[])
+    public static function itemlinks(array $args = [])
     {
         extract($args);
 

@@ -297,7 +297,7 @@ class xarAPISchemas_Test
                 EOT;
             throw new Exception($message . "\nVendor: $root - $vendor\n");
         }
-        return $vendor .'/autoload.php';
+        return $vendor . '/autoload.php';
     }
 
     public static function setAutoload()
