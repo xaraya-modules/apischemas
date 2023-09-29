@@ -4,7 +4,10 @@
     "description": "Play with API schemas",
     "homepage": "https://github.com/xaraya-modules/apischemas",
     "license": "GPL-2.0-or-later",
-    "require": {},
+    "require": {
+        "mevdschee/php-crud-api": "^2.14",
+        "nikic/fast-route": "dev-master"
+    },
     "autoload": {
         "classmap": ["./"],
         "exclude-from-classmap": ["/vendor/"]
