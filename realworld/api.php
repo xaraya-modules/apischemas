@@ -14,7 +14,7 @@
  *
  * https://github.com/nikic/FastRoute
  */
-$baseDir = '/home/mikespub/xaraya-core';
+$baseDir = dirname(__DIR__, 4);
 require $baseDir . '/vendor/autoload.php';
 
 // use the FastRoute library here

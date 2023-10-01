@@ -1,27 +1,32 @@
 <?php
+/**
+ * File: src/index.php
+ *
+ * 1. Install mevdschee/php-crud-api package with composer
+ * 2. Configure or customize $config below
+ * 3. Try out Swagger UI with URL index.php/openapi - WARNING: this provides write access by default
+ */
 
-// 1. Download PHP-CRUD-API api.include.php file from https://github.com/mevdschee/php-crud-api:
-// $ wget https://github.com/mevdschee/php-crud-api/raw/main/api.include.php -O php-crud-api.include.php
-// 2. Configure or customize $config below
-// 3. Try out Swagger UI with URL php-crud-api.php/openapi - WARNING: this provides write access by default
-include 'php-crud-api.include.php';
-
-// file: src/index.php
-//namespace Tqdev\PhpCrudApi {
+namespace Tqdev\PhpCrudApi;
 
 use Tqdev\PhpCrudApi\Api;
 use Tqdev\PhpCrudApi\Config\Config;
 use Tqdev\PhpCrudApi\RequestFactory;
 use Tqdev\PhpCrudApi\ResponseUtils;
+use sys;
+use xarSystemVars;
 
-include 'var/config.system.php';
+$baseDir = dirname(__DIR__, 4);
+require $baseDir . '/vendor/autoload.php';
+sys::init();
+
 $config = new Config([
     // 'driver' => 'mysql',
     // 'address' => 'localhost',
     // 'port' => '3306',
-    'username' => $systemConfiguration['DB.UserName'],
-    'password' => $systemConfiguration['DB.Password'],
-    'database' => $systemConfiguration['DB.Name'],
+    'username' => xarSystemVars::get(sys::CONFIG, 'DB.UserName'),
+    'password' => xarSystemVars::get(sys::CONFIG, 'DB.Password'),
+    'database' => xarSystemVars::get(sys::CONFIG, 'DB.Name'),
     // 'debug' => false
     'controllers' => 'records,openapi,status',
     //'controllers' => 'records,openapi,columns,status',
@@ -36,10 +41,9 @@ $config = new Config([
     'pageLimits.records' => 100,
     'tables' => 'xar_dynamic_objects,xar_dynamic_properties,xar_dynamic_data',
     'mapping' => 'xar_dynamic_objects=objects,xar_dynamic_properties=properties,xar_dynamic_data=dynamic_data',
-    'basePath' => '/bermuda/php-crud-api.php',
+    'basePath' => '/code/modules/apischemas/php-crud-api/index.php',
 ]);
 $request = RequestFactory::fromGlobals();
 $api = new Api($config);
 $response = $api->handle($request);
 ResponseUtils::output($response);
-//}
