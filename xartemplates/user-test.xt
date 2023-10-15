@@ -11,6 +11,11 @@
             <h2>Test API Schemas</h2>
         </div>
         <div class="xar-mod-object-body">
+            <h3>Result: #$method# #$path#</h3>
+            <pre>
+            <xar:set name="value">json_encode($data, JSON_PRETTY_PRINT)</xar:set>
+            #$value#
+            </pre>
             <h3>Info</h3>
             <ul>
                 <xar:foreach in="$doc['info']" key="$k" value="$v">
@@ -29,12 +34,12 @@
             </ul>
             <h3>Paths</h3>
             <ul>
-                <xar:foreach in="$doc['paths']" key="$path" value="$ops">
-                    <li>#$path#:
+                <xar:foreach in="$doc['paths']" key="$docpath" value="$ops">
+                    <li>#$docpath#:
                         <ul>
                         <xar:foreach in="$ops" key="$method" value="$op">
                             <xar:if condition="$method eq 'get'">
-                                <li><a href="#xarServer::getCurrentURL(['path' => $path])#">#$method#</a> (#$op['operationId']#): #$op['description']#</li>
+                                <li><a href="#xarServer::getCurrentURL(['path' => $docpath])#">#$method#</a> (#$op['operationId']#): #$op['description']#</li>
                             <xar:else/>
                                 <li>#$method# (#$op['operationId']#): #$op['description']#</li>
                             </xar:if>
@@ -55,10 +60,6 @@
                     </li>
                 </xar:foreach>
             </ul>
-            <h3>Result: #$method# #$path#</h3>
-            <pre>
-            <xar:set name="dummy">var_dump($data)</xar:set>
-            </pre>
         </div>
     </div>
 </xar:template>

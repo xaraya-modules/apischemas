@@ -18,7 +18,9 @@ class xarAPISchemas_User
     protected static $moduleid = 18252;
     protected static $objects = [];
 
-    public static function init(array $args = []) {}
+    public static function init(array $args = [])
+    {
+    }
 
     public static function main(array $args = [])
     {

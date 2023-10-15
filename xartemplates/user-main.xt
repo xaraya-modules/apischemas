@@ -17,6 +17,7 @@
                 <li>Try out the <a href="code/modules/apischemas/swagger-ui/">Swagger UI (OpenAPI)</a></li>
                 <li>Try out the <a href="code/modules/apischemas/playground/">GraphQL Playground</a></li>
                 <li>Try out the <a href="code/modules/apischemas/datatables/">DataTables (OpenAPI)</a></li>
+                <li>Try out the <a href="#xarController::URL('apischemas', 'user', 'test')#">RealWorld API Test</a> - <a href="code/modules/apischemas/realworld/api.php">API</a></li>
             </ul>
         </div>
     </div>

@@ -28,7 +28,7 @@ class xarAPISchemas_Test
      */
     public static function init(array $args = [])
     {
-        static::setAutoload();
+        sys::autoload();
     }
 
     /**
@@ -270,39 +270,5 @@ class xarAPISchemas_Test
                 $r->addRoute(strtoupper($method), $path, [static::class, $handleOperation]);
             }
         }
-    }
-
-    public static function checkAutoload()
-    {
-        // @checkme we need to require composer autoload here
-        $root = sys::root();
-        // flat install supporting symlinks
-        if (empty($root)) {
-            $vendor = realpath(dirname(realpath($_SERVER['SCRIPT_FILENAME'])) . '/../vendor');
-        } elseif ($root == sys::web() && is_dir($root . '../vendor')) {
-            $vendor = realpath($root . '../vendor');
-        } else {
-            $vendor = realpath($root . 'vendor');
-        }
-        if (!file_exists($vendor . '/autoload.php')) {
-            $message = <<<EOT
-                This test needs composer autoload to run the openapi faker
-                $ composer require --dev canvural/php-openapi-faker
-                ...
-                $ head html/code/modules/apischemas/xaruser/test.php
-                &lt;?php
-                sys::import('modules.apischemas.class.test');
-                xarAPISchemas_Test::init();
-                ...
-                EOT;
-            throw new Exception($message . "\nVendor: $root - $vendor\n");
-        }
-        return $vendor . '/autoload.php';
-    }
-
-    public static function setAutoload()
-    {
-        $autoloadFile = static::checkAutoload();
-        require_once $autoloadFile;
     }
 }
