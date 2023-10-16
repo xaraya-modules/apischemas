@@ -9,46 +9,22 @@
  *
  * @author mikespub <mikespub@xaraya.com>
 **/
+
+namespace Xaraya\Modules\ApiSchemas;
+
 //require dirname(__DIR__).'/vendor/autoload.php';
 //use Vural\OpenAPIFaker\OpenAPIFaker;
 //use OpenAPIServer\Mock\OpenApiDataMocker;
+use BadParameterException;
+use xarServer;
 
 /**
  * Class to test the API schemas
 **/
-class xarAPISchemas_Test
+class TestApi
 {
     public static $endpoint = 'api.php';
     public static $operations = [];
-
-    /**
-     * Initialize test with composer autoload
-     * @param array $args
-     * @return void
-     */
-    public static function init(array $args = [])
-    {
-        sys::autoload();
-    }
-
-    /**
-     * Main test user page = index.php?module=apischemas&type=user&func=test
-     * @param array $args
-     * @return array
-     */
-    public static function main(array $args = [])
-    {
-        $args['path'] ??= '/articles/feed';
-        $args['method'] ??= 'GET';
-        $doc = static::getOpenAPI();
-        $operation = static::findOperation($args['path'], $args['method'], $doc);
-        $schema = static::getResponseSchema($operation, $doc);
-        $args['data'] = static::buildResponse('response', $schema);
-        // start by dereferencing components
-        $doc['components'] = self::dereference($doc['components'], $doc);
-        $args['doc'] = self::dereference($doc, $doc);
-        return $args;
-    }
 
     /**
      * De-reference OpenAPI document

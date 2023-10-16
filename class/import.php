@@ -9,11 +9,20 @@
  *
  * @author mikespub <mikespub@xaraya.com>
  */
+
+namespace Xaraya\Modules\ApiSchemas;
+
+use DataObjectMaster;
+use DataPropertyMaster;
+use Exception;
+use sys;
+
 sys::import('modules.dynamicdata.class.objects.master');
+
 /**
  * Class to import the API schemas
 **/
-class xarAPISchemas_Import
+class Import
 {
     protected static $dd_prefix = 'api_';
     protected static $moduleid = 18252;

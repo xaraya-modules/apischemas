@@ -21,6 +21,7 @@ require $baseDir . '/vendor/autoload.php';
 //use FastRoute\Dispatcher;
 //use FastRoute\RouteCollector;
 //use function FastRoute\simpleDispatcher;
+use Xaraya\Modules\ApiSchemas\TestApi;
 
 if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     DataObjectRESTHandler::sendCORSOptions();
@@ -40,14 +41,14 @@ sys::init();
 
 function send_openapi()
 {
-    $result = xarAPISchemas_Test::getOpenAPI();
+    $result = TestApi::getOpenAPI();
     DataObjectRESTHandler::output($result);
 }
 
 function get_dispatcher()
 {
     $dispatcher = FastRoute\simpleDispatcher(function (FastRoute\RouteCollector $r) {
-        xarAPISchemas_Test::registerRoutes($r);
+        TestApi::registerRoutes($r);
     });
     return $dispatcher;
 }

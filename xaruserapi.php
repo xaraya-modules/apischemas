@@ -7,22 +7,23 @@
  * @license GPL {@link http://www.gnu.org/licenses/gpl.html}
  * @link http://xaraya.info/index.php/release/182.html
  */
-sys::import('modules.apischemas.class.user');
+sys::import('modules.apischemas.class.userapi');
+use Xaraya\Modules\ApiSchemas\UserApi;
 
 /**
  * Utility function to retrieve the list of itemtypes of this module (if any).
- * @uses xarAPISchemas_User::itemtypes()
+ * @uses UserApi::itemtypes()
  * @param array    $args array of optional parameters
  * @return array the itemtypes of this module and their description
  */
 function apischemas_userapi_getitemtypes(array $args = [])
 {
-    return xarAPISchemas_User::itemtypes($args);
+    return UserApi::itemtypes($args);
 }
 
 /**
  * utility function to pass individual item links to whoever
- * @uses xarAPISchemas_User::itemlinks()
+ * @uses UserApi::itemlinks()
  * @param array    $args array of optional parameters
  *        string   $args['itemtype'] item type (optional)
  *        array    $args['itemids'] array of item ids to get
@@ -30,5 +31,5 @@ function apischemas_userapi_getitemtypes(array $args = [])
  */
 function apischemas_userapi_getitemlinks(array $args = [])
 {
-    return xarAPISchemas_User::itemlinks($args);
+    return UserApi::itemlinks($args);
 }

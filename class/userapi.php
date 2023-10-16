@@ -9,23 +9,26 @@
  *
  * @author mikespub <mikespub@xaraya.com>
 **/
+
+namespace Xaraya\Modules\ApiSchemas;
+
+use DataObjectDescriptor;
+use DataObjectMaster;
+use DataPropertyMaster;
+use xarMod;
+use xarServer;
+use xarVar;
+use sys;
+
 sys::import('modules.dynamicdata.class.objects.master');
+
 /**
  * Class to manage the API schemas
 **/
-class xarAPISchemas_User
+class UserApi
 {
     protected static $moduleid = 18252;
     protected static $objects = [];
-
-    public static function init(array $args = [])
-    {
-    }
-
-    public static function main(array $args = [])
-    {
-        return $args;
-    }
 
     public static function get_objects()
     {

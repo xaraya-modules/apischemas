@@ -7,30 +7,32 @@
  * @license GPL {@link http://www.gnu.org/licenses/gpl.html}
  * @link http://xaraya.info/index.php/release/182.html
  */
-sys::import('modules.apischemas.class.user');
-sys::import('modules.apischemas.class.test');
+sys::import('modules.apischemas.class.usergui');
+sys::import('modules.apischemas.class.testgui');
+use Xaraya\Modules\ApiSchemas\UserGui;
+use Xaraya\Modules\ApiSchemas\TestGui;
 
 /**
  * User main
  *
- * @uses xarAPISchemas_User::main()
+ * @uses UserGui::main()
  * @param array $args
  * @return string template output in HTML
  */
 function apischemas_user_main(array $args = [])
 {
-    return xarAPISchemas_User::main($args);
+    return UserGui::main($args);
 }
 
 /**
  * User test
  *
- * @uses xarAPISchemas_Test::main()
+ * @uses TestGui::main()
  * @param array $args
  * @return string template output in HTML
  */
 function apischemas_user_test(array $args = [])
 {
-    xarAPISchemas_Test::init();
-    return xarAPISchemas_Test::main($args);
+    TestGui::init();
+    return TestGui::main($args);
 }

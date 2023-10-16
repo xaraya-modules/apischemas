@@ -25,6 +25,7 @@ $modversion['admin']          = false;
 $modversion['user']           = true;
 $modversion['class']          = 'Utility';
 $modversion['category']       = 'Miscellaneous';
+$modversion['namespace']      = 'Xaraya\Modules\ApiSchemas';
 $modversion['securityschema'] = [];
 $modversion['dependency']     = [];
 $modversion['dependencyinfo'] = [];
