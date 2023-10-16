@@ -55,7 +55,7 @@ function apischemas_deactivate()
 /**
  * Upgrade this module from an old version
  *
- * @param oldVersion
+ * @param string $oldversion
  * @return boolean true on success, false on failure
  */
 

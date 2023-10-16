@@ -15,6 +15,7 @@ namespace Xaraya\Modules\ApiSchemas;
 //require dirname(__DIR__).'/vendor/autoload.php';
 //use Vural\OpenAPIFaker\OpenAPIFaker;
 //use OpenAPIServer\Mock\OpenApiDataMocker;
+use FastRoute\RouteCollector;
 use BadParameterException;
 use xarServer;
 
@@ -229,7 +230,7 @@ class TestApi
 
     /**
      * Register REST API routes (in FastRoute format) - see realworld/api.php
-     * @param FastRoute\RouteCollector $r
+     * @param RouteCollector $r
      * @return void
      */
     public static function registerRoutes($r)

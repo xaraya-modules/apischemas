@@ -17,7 +17,7 @@ use Xaraya\Modules\ApiSchemas\TestGui;
  *
  * @uses UserGui::main()
  * @param array $args
- * @return string template output in HTML
+ * @return mixed template output in HTML
  */
 function apischemas_user_main(array $args = [])
 {
@@ -29,7 +29,7 @@ function apischemas_user_main(array $args = [])
  *
  * @uses TestGui::main()
  * @param array $args
- * @return string template output in HTML
+ * @return mixed template output in HTML
  */
 function apischemas_user_test(array $args = [])
 {

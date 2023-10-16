@@ -189,7 +189,6 @@ class Import
                     break;
                 default:
                     throw new Exception('Unsupported property type ' . $property->type);
-                    break;
             }
             $label = ucwords(str_replace('_', ' ', $name));
             $seq += 1;

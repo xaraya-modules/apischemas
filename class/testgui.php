@@ -15,6 +15,7 @@ namespace Xaraya\Modules\ApiSchemas;
 //require dirname(__DIR__).'/vendor/autoload.php';
 //use Vural\OpenAPIFaker\OpenAPIFaker;
 //use OpenAPIServer\Mock\OpenApiDataMocker;
+use sys;
 
 /**
  * Class to test the API schemas
@@ -40,13 +41,13 @@ class TestGui
     {
         $args['path'] ??= '/articles/feed';
         $args['method'] ??= 'GET';
-        $doc = static::getOpenAPI();
-        $operation = static::findOperation($args['path'], $args['method'], $doc);
-        $schema = static::getResponseSchema($operation, $doc);
-        $args['data'] = static::buildResponse('response', $schema);
+        $doc = TestApi::getOpenAPI();
+        $operation = TestApi::findOperation($args['path'], $args['method'], $doc);
+        $schema = TestApi::getResponseSchema($operation, $doc);
+        $args['data'] = TestApi::buildResponse('response', $schema);
         // start by dereferencing components
-        $doc['components'] = self::dereference($doc['components'], $doc);
-        $args['doc'] = self::dereference($doc, $doc);
+        $doc['components'] = TestApi::dereference($doc['components'], $doc);
+        $args['doc'] = TestApi::dereference($doc, $doc);
         return $args;
     }
 }
