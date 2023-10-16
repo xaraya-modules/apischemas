@@ -21,10 +21,20 @@ sys::import('modules.dynamicdata.class.objects.master');
 **/
 class UserGui
 {
+    /**
+     * Summary of init
+     * @param array<string, mixed> $args
+     * @return void
+     */
     public static function init(array $args = [])
     {
     }
 
+    /**
+     * Summary of main
+     * @param array<string, mixed> $args
+     * @return array<mixed>
+     */
     public static function main(array $args = [])
     {
         return $args;

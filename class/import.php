@@ -12,6 +12,7 @@
 
 namespace Xaraya\Modules\ApiSchemas;
 
+use DataObject;
 use DataObjectMaster;
 use DataPropertyMaster;
 use Exception;
@@ -24,35 +25,51 @@ sys::import('modules.dynamicdata.class.objects.master');
 **/
 class Import
 {
-    protected static $dd_prefix = 'api_';
-    protected static $moduleid = 18252;
-    protected static $itemtype = 0;
-    protected static $proptype_ids = [];
-    protected static $dataproperty = null;
-    protected static $schemas;
-    protected static $fixtures;
-    protected static $mapping;
-    protected static $alias = [];
-    protected static $links = [];
-    protected static $labels = [];
-    protected static $models = [];
-    protected static $inherit = [];
-    protected static $objects = [];
+    protected static string $dd_prefix = 'api_';
+    protected static int $moduleId = 18252;
+    protected static int $itemtype = 0;
+    /** @var array<string, mixed> */
+    protected static array $proptype_ids = [];
+    protected static ?DataObject $dataproperty = null;
+    protected static string $schemas;
+    protected static string $fixtures;
+    protected static string $mapping;
+    /** @var array<string, mixed> */
+    protected static array $alias = [];
+    /** @var array<string, mixed> */
+    protected static array $links = [];
+    /** @var array<string, mixed> */
+    protected static array $labels = [];
+    /** @var array<string, mixed> */
+    protected static array $models = [];
+    /** @var array<string, mixed> */
+    protected static array $inherit = [];
+    /** @var array<string, mixed> */
+    protected static array $objects = [];
 
+    /**
+     * Summary of init
+     * @param array<string, mixed> $args
+     * @return void
+     */
     public static function init(array $args = [])
     {
         if (isset(self::$schemas)) {
             return;
         }
-        self::get_proptype_ids();
+        self::getPropertyTypeIds();
         self::$schemas = dirname(__DIR__) . '/resources/schemas';
         self::$fixtures = dirname(__DIR__) . '/resources/fixtures';
         self::$mapping = dirname(__DIR__) . '/resources/mapping.json';
-        self::get_mapping();
-        self::get_objects();
+        self::getMapping();
+        self::getObjects();
     }
 
-    public static function get_mapping()
+    /**
+     * Summary of getMapping
+     * @return void
+     */
+    public static function getMapping()
     {
         $content = file_get_contents(self::$mapping);
         $info = json_decode($content, true);
@@ -63,12 +80,16 @@ class Import
         self::$inherit = $info['inherit'];
     }
 
-    public static function get_objects()
+    /**
+     * Summary of getObjects
+     * @return mixed
+     */
+    public static function getObjects()
     {
         $objects = DataObjectMaster::getObjects();
         self::$objects = [];
         foreach ($objects as $objectid => $objectinfo) {
-            if (intval($objectinfo['moduleid']) !== self::$moduleid) {
+            if (intval($objectinfo['moduleid']) !== self::$moduleId) {
                 continue;
             }
             if (intval($objectinfo['itemtype']) > self::$itemtype) {
@@ -97,7 +118,11 @@ class Import
     }
      */
 
-    public static function get_proptype_ids()
+    /**
+     * Summary of getPropertyTypeIds
+     * @return mixed
+     */
+    public static function getPropertyTypeIds()
     {
         $proptypes = DataPropertyMaster::getPropertyTypes();
         self::$proptype_ids = [];
@@ -108,7 +133,13 @@ class Import
         return self::$proptype_ids;
     }
 
-    public static function create_object($info)
+    /**
+     * Summary of createObject
+     * @param mixed $info
+     * @throws \Exception
+     * @return mixed
+     */
+    public static function createObject($info)
     {
         $objectname = self::$dd_prefix . $info->name;
         if (array_key_exists($objectname, self::$objects)) {
@@ -121,7 +152,7 @@ class Import
             [
                 'name' => $objectname,
                 'label' => $info->title,
-                'moduleid' => self::$moduleid,
+                'moduleid' => self::$moduleId,
                 'itemtype' => self::$itemtype,
             ]
         );
@@ -208,7 +239,11 @@ class Import
         return $objectid;
     }
 
-    public static function check_links()
+    /**
+     * Summary of checkLinks
+     * @return void
+     */
+    public static function checkLinks()
     {
         // @checkme we only create one many-to-many link object sorted by name
         ksort(self::$links);
@@ -222,13 +257,19 @@ class Import
                 }
                 $seen[] = "$source:$from=$target:$field";
                 // @checkme assuming only one many-to-many link between objects here
-                $objectid = self::create_link($source, $target);
+                $objectid = self::createLink($source, $target);
             }
         }
-        self::get_objects();
+        self::getObjects();
     }
 
-    public static function create_link($source, $target)
+    /**
+     * Summary of createLink
+     * @param mixed $source
+     * @param mixed $target
+     * @return mixed
+     */
+    public static function createLink($source, $target)
     {
         $linkname = self::$dd_prefix . $source . '_' . $target;
         $title = ucfirst($source) . ' x ' . ucfirst($target);
@@ -242,7 +283,7 @@ class Import
             [
                 'name' => $linkname,
                 'label' => $title,
-                'moduleid' => self::$moduleid,
+                'moduleid' => self::$moduleId,
                 'itemtype' => self::$itemtype,
             ]
         );
@@ -294,7 +335,11 @@ class Import
         return $objectid;
     }
 
-    public static function load_schemas()
+    /**
+     * Summary of loadSchemas
+     * @return void
+     */
+    public static function loadSchemas()
     {
         self::init();
         $schemas = [];
@@ -303,19 +348,24 @@ class Import
                 continue;
             }
             echo 'Loading schema ' . $file . "\n";
-            $info = self::parse_schema($file);
-            //self::dump_schema($info);
+            $info = self::parseSchema($file);
+            //self::dumpSchema($info);
             $schemas[$info->name] = $info;
         }
         ksort($schemas);
         foreach ($schemas as $name => $info) {
-            $objectid = self::create_object($info);
+            $objectid = self::createObject($info);
         }
-        self::get_objects();
-        self::check_links();
+        self::getObjects();
+        self::checkLinks();
     }
 
-    public static function parse_schema(string $file)
+    /**
+     * Summary of parseSchema
+     * @param string $file
+     * @return mixed
+     */
+    public static function parseSchema(string $file)
     {
         $content = file_get_contents(self::$schemas . '/' . $file);
         $schema = json_decode($content);
@@ -324,7 +374,12 @@ class Import
         return $schema;
     }
 
-    public static function dump_schema($info)
+    /**
+     * Summary of dumpSchema
+     * @param mixed $info
+     * @return void
+     */
+    public static function dumpSchema($info)
     {
         //echo json_encode($info, JSON_PRETTY_PRINT);
         echo $info->name . " " . $info->title . " " . $info->description . "\n";
@@ -337,7 +392,12 @@ class Import
         }
     }
 
-    public static function delete_objects()
+    /**
+     * Summary of deleteObjects
+     * @throws \Exception
+     * @return void
+     */
+    public static function deleteObjects()
     {
         self::init();
         foreach (self::$objects as $objectname => $info) {
@@ -349,7 +409,12 @@ class Import
         }
     }
 
-    public static function load_items()
+    /**
+     * Summary of loadItems
+     * @throws \Exception
+     * @return void
+     */
+    public static function loadItems()
     {
         self::init();
         $data = [];
@@ -357,8 +422,8 @@ class Import
             if (strpos($file, '.json') === false) {
                 continue;
             }
-            $items = self::parse_items($file);
-            //self::dump_items($items);
+            $items = self::parseItems($file);
+            //self::dumpItems($items);
             foreach (array_keys($items) as $model) {
                 if (!array_key_exists($model, $data)) {
                     $data[$model] = [];
@@ -376,7 +441,7 @@ class Import
         foreach (array_unique(array_values(self::$inherit)) as $parent) {
             unset($data[$parent]);
         }
-        self::dump_items($data);
+        self::dumpItems($data);
         foreach ($data as $model => $items) {
             //echo json_encode($items, JSON_PRETTY_PRINT);
             $schema = self::$models[$model];
@@ -440,7 +505,13 @@ class Import
         }
     }
 
-    public static function parse_items(string $file)
+    /**
+     * Summary of parseItems
+     * @param string $file
+     * @throws \Exception
+     * @return array<string, mixed>
+     */
+    public static function parseItems(string $file)
     {
         $content = file_get_contents(self::$fixtures . '/' . $file);
         $data = json_decode($content);
@@ -458,7 +529,12 @@ class Import
         return $items;
     }
 
-    public static function dump_items($items)
+    /**
+     * Summary of dumpItems
+     * @param mixed $items
+     * @return void
+     */
+    public static function dumpItems($items)
     {
         //echo json_encode($items, JSON_PRETTY_PRINT);
         foreach (array_keys($items) as $model) {
@@ -467,7 +543,12 @@ class Import
         }
     }
 
-    public static function delete_items()
+    /**
+     * Summary of deleteItems
+     * @throws \Exception
+     * @return void
+     */
+    public static function deleteItems()
     {
         self::init();
         foreach (self::$objects as $objectname => $info) {

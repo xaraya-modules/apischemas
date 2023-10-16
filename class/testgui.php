@@ -24,7 +24,7 @@ class TestGui
 {
     /**
      * Initialize test with composer autoload
-     * @param array $args
+     * @param array<string, mixed> $args
      * @return void
      */
     public static function init(array $args = [])
@@ -34,8 +34,8 @@ class TestGui
 
     /**
      * Main test user page = index.php?module=apischemas&type=user&func=test
-     * @param array $args
-     * @return array
+     * @param array<string, mixed> $args
+     * @return array<mixed>
      */
     public static function main(array $args = [])
     {

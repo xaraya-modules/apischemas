@@ -25,7 +25,7 @@ use Xaraya\Modules\ApiSchemas\TestApi;
 
 if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     DataObjectRESTHandler::sendCORSOptions();
-    exit(0);
+    return;
 }
 
 // initialize bootstrap
@@ -39,12 +39,20 @@ sys::init();
 // initialize users
 //xarUser::init();
 
+/**
+ * Summary of send_openapi
+ * @return void
+ */
 function send_openapi()
 {
     $result = TestApi::getOpenAPI();
     DataObjectRESTHandler::output($result);
 }
 
+/**
+ * Summary of get_dispatcher
+ * @return FastRoute\Dispatcher
+ */
 function get_dispatcher()
 {
     $dispatcher = FastRoute\simpleDispatcher(function (FastRoute\RouteCollector $r) {
@@ -53,6 +61,12 @@ function get_dispatcher()
     return $dispatcher;
 }
 
+/**
+ * Summary of dispatch_request
+ * @param string $method
+ * @param string $path
+ * @return void
+ */
 function dispatch_request($method, $path)
 {
     $dispatcher = get_dispatcher();
@@ -91,6 +105,10 @@ function dispatch_request($method, $path)
     }
 }
 
+/**
+ * Summary of try_handler
+ * @return void
+ */
 function try_handler()
 {
     if (empty($_SERVER['PATH_INFO'])) {

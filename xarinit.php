@@ -21,10 +21,10 @@ use Xaraya\Modules\ApiSchemas\Import;
 **/
 function apischemas_init()
 {
-    //Import::delete_items();
-    //Import::delete_objects();
-    Import::load_schemas();
-    Import::load_items();
+    //Import::deleteItems();
+    //Import::deleteObjects();
+    Import::loadSchemas();
+    Import::loadItems();
 
     // Installation complete; check for upgrades
     return apischemas_upgrade('2.0.0');
@@ -78,10 +78,10 @@ function apischemas_upgrade($oldversion)
  */
 function apischemas_delete()
 {
-    Import::delete_items();
-    Import::delete_objects();
-    //Import::load_schemas();
-    //Import::load_items();
+    Import::deleteItems();
+    Import::deleteObjects();
+    //Import::loadSchemas();
+    //Import::loadItems();
 
     return true;
 }

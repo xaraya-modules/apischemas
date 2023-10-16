@@ -24,8 +24,9 @@ use xarServer;
 **/
 class TestApi
 {
-    public static $endpoint = 'api.php';
-    public static $operations = [];
+    public static string $endpoint = 'api.php';
+    /** @var array<string, mixed> */
+    public static array $operations = [];
 
     /**
      * De-reference OpenAPI document
@@ -65,7 +66,7 @@ class TestApi
      * Get OpenAPI document as array
      * @param mixed $vars
      * @param mixed $request
-     * @return array
+     * @return array<string, mixed>
      */
     public static function getOpenAPI($vars = [], &$request = null)
     {
@@ -93,7 +94,7 @@ class TestApi
 
     /**
      * Generic request handler for all operations - requires finding the matching operation again
-     * @param array $args
+     * @param array<string, mixed> $args
      * @return mixed
      */
     public static function handleRequest($args)
@@ -112,9 +113,9 @@ class TestApi
      * Find operation matching path and method, possibly using regex for path params
      * @param string $path
      * @param string $method
-     * @param array $doc
+     * @param array<string, mixed> $doc
      * @throws BadParameterException
-     * @return array
+     * @return array<string, mixed>
      */
     public static function findOperation($path, $method, $doc)
     {
@@ -157,7 +158,7 @@ class TestApi
     /**
      * Magic method to call specific operation handler - no need to find matching operation here
      * @param string $method
-     * @param array $args
+     * @param array<string, mixed> $args
      * @throws BadParameterException
      * @return mixed
      */
@@ -175,11 +176,11 @@ class TestApi
 
     /**
      * Summary of getResponseSchema
-     * @param array $operation
-     * @param ?array $doc
+     * @param array<string, mixed> $operation
+     * @param ?array<string, mixed> $doc
      * @param string $statusCode
      * @param string $mediaType
-     * @return array
+     * @return array<string, mixed>
      */
     public static function getResponseSchema($operation, $doc = null, $statusCode = '200', $mediaType = 'application/json')
     {
@@ -192,7 +193,7 @@ class TestApi
     /**
      * Summary of buildResponse
      * @param string $name
-     * @param array $schema
+     * @param array<string, mixed> $schema
      * @param integer $count
      * @return mixed
      */

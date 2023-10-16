@@ -16,7 +16,7 @@ use Xaraya\Modules\ApiSchemas\TestGui;
  * User main
  *
  * @uses UserGui::main()
- * @param array $args
+ * @param array<string, mixed> $args
  * @return mixed template output in HTML
  */
 function apischemas_user_main(array $args = [])
@@ -28,7 +28,7 @@ function apischemas_user_main(array $args = [])
  * User test
  *
  * @uses TestGui::main()
- * @param array $args
+ * @param array<string, mixed> $args
  * @return mixed template output in HTML
  */
 function apischemas_user_test(array $args = [])
