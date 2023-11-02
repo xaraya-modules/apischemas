@@ -17,7 +17,7 @@ use sys;
 use xarSystemVars;
 
 $baseDir = dirname(__DIR__, 4);
-require $baseDir . '/vendor/autoload.php';
+require_once $baseDir . '/vendor/autoload.php';
 sys::init();
 
 $config = new Config([

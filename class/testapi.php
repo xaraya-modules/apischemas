@@ -12,7 +12,7 @@
 
 namespace Xaraya\Modules\ApiSchemas;
 
-//require dirname(__DIR__).'/vendor/autoload.php';
+//require_once dirname(__DIR__).'/vendor/autoload.php';
 //use Vural\OpenAPIFaker\OpenAPIFaker;
 //use OpenAPIServer\Mock\OpenApiDataMocker;
 use FastRoute\RouteCollector;
