@@ -13,12 +13,12 @@
 namespace Xaraya\Modules\ApiSchemas;
 
 use DataObject;
-use DataObjectMaster;
+use DataObjectFactory;
 use DataPropertyMaster;
 use Exception;
 use sys;
 
-sys::import('modules.dynamicdata.class.objects.master');
+sys::import('modules.dynamicdata.class.objects.factory');
 
 /**
  * Class to import the API schemas
@@ -86,7 +86,7 @@ class Import
      */
     public static function getObjects()
     {
-        $objects = DataObjectMaster::getObjects();
+        $objects = DataObjectFactory::getObjects();
         self::$objects = [];
         foreach ($objects as $objectid => $objectinfo) {
             if (intval($objectinfo['moduleid']) !== self::$moduleId) {
@@ -106,7 +106,7 @@ class Import
     {
         self::$links = array();
         foreach (self::$objects as $objectname => $info) {
-            $dataobject = DataObjectMaster::getObject(array('name' => $objectname));
+            $dataobject = DataObjectFactory::getObject(array('name' => $objectname));
             foreach ($dataobject->properties as $property) {
                 //if ($property->type == self::$proptype_ids['array']) {
                 if ($property->type == self::$proptype_ids['textarea']) {
@@ -129,7 +129,7 @@ class Import
         foreach ($proptypes as $typeid => $proptype) {
             self::$proptype_ids[$proptype['name']] = $typeid;
         }
-        self::$dataproperty = DataObjectMaster::getObject(['name' => 'properties']);
+        self::$dataproperty = DataObjectFactory::getObject(['name' => 'properties']);
         return self::$proptype_ids;
     }
 
@@ -148,7 +148,7 @@ class Import
         }
         echo 'Creating object ' . $objectname . "\n";
         self::$itemtype += 1;
-        $objectid = DataObjectMaster::createObject(
+        $objectid = DataObjectFactory::createObject(
             [
                 'name' => $objectname,
                 'label' => $info->title,
@@ -279,7 +279,7 @@ class Import
         }
         echo 'Creating object ' . $linkname . "\n";
         self::$itemtype += 1;
-        $objectid = DataObjectMaster::createObject(
+        $objectid = DataObjectFactory::createObject(
             [
                 'name' => $linkname,
                 'label' => $title,
@@ -402,7 +402,7 @@ class Import
         self::init();
         foreach (self::$objects as $objectname => $info) {
             echo 'Deleting object ' . $objectname . "\n";
-            $result = DataObjectMaster::deleteObject(['name' => $objectname]);
+            $result = DataObjectFactory::deleteObject(['name' => $objectname]);
             if (empty($result)) {
                 throw new Exception('Error deleting object ' . $objectname);
             }
@@ -450,7 +450,7 @@ class Import
                 throw new Exception('Unknown object: ' . $objectname);
             }
             echo 'Loading items for object ' . $objectname . ': ' . count($items) . "\n";
-            $dataobject = DataObjectMaster::getObject(['name' => $objectname]);
+            $dataobject = DataObjectFactory::getObject(['name' => $objectname]);
             $datalinks = [];
             $datatarget = [];
             foreach (self::$links[$schema] as $from => $to) {
@@ -460,7 +460,7 @@ class Import
                 sort($tosort);
                 $linkname = self::$dd_prefix . implode('_', $tosort);
                 echo 'Adding links for ' . $from . ' in ' . $linkname . "\n";
-                $datalinks[$from] = DataObjectMaster::getObject(['name' => $linkname]);
+                $datalinks[$from] = DataObjectFactory::getObject(['name' => $linkname]);
                 $datatarget[$from] = $target;
             }
             // @todo keep array serialized/encoded for now - add relationships later
@@ -552,10 +552,10 @@ class Import
     {
         self::init();
         foreach (self::$objects as $objectname => $info) {
-            $objectlist = DataObjectMaster::getObjectList(['name' => $objectname]);
+            $objectlist = DataObjectFactory::getObjectList(['name' => $objectname]);
             $items = $objectlist->getItems();
             echo 'Deleting items for object ' . $objectname . ': ' . count($items) . "\n";
-            $dataobject = DataObjectMaster::getObject(['name' => $objectname]);
+            $dataobject = DataObjectFactory::getObject(['name' => $objectname]);
             foreach ($items as $itemid => $item) {
                 //echo $itemid . ': ' . json_encode($item) . "\n";
                 $itemid = $dataobject->deleteItem(['itemid' => $itemid]);

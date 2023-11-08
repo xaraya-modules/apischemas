@@ -14,7 +14,7 @@ namespace Xaraya\Modules\ApiSchemas;
 
 use sys;
 
-sys::import('modules.dynamicdata.class.objects.master');
+sys::import('modules.dynamicdata.class.objects.factory');
 
 /**
  * Class to manage the API schemas
