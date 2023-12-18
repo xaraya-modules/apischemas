@@ -14,9 +14,9 @@
         <div class="xar-mod-object-body">
             <!-- xar:template type="module" file="main_objects"/-->
             <ul>
-                <li>Try out the <a href="code/modules/apischemas/swagger-ui/">Swagger UI (OpenAPI)</a></li>
-                <li>Try out the <a href="code/modules/apischemas/playground/">GraphQL Playground</a></li>
-                <li>Try out the <a href="code/modules/apischemas/datatables/">DataTables (OpenAPI)</a></li>
+                <li>Try out the <a href="code/modules/apischemas/swagger-ui/index.html">Swagger UI (OpenAPI)</a></li>
+                <li>Try out the <a href="code/modules/apischemas/playground/index.html">GraphQL Playground</a></li>
+                <li>Try out the <a href="code/modules/apischemas/datatables/index.html">DataTables (OpenAPI)</a></li>
                 <li>Try out the <a href="code/modules/apischemas/php-crud-api/index.php/openapi">PHP-CRUD-API</a></li>
                 <li>Try out the <a href="#xarController::URL('apischemas', 'user', 'test')#">RealWorld API Test</a> - <a href="code/modules/apischemas/realworld/api.php">API</a></li>
             </ul>

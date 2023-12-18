@@ -41,10 +41,11 @@ class TestGui
     {
         $args['path'] ??= '/articles/feed';
         $args['method'] ??= 'GET';
-        $doc = TestApi::getOpenAPI();
-        $operation = TestApi::findOperation($args['path'], $args['method'], $doc);
-        $schema = TestApi::getResponseSchema($operation, $doc);
-        $args['data'] = TestApi::buildResponse('response', $schema);
+        $testapi = new TestApi();
+        $doc = $testapi->getOpenAPI();
+        $operation = $testapi->findOperation($args['path'], $args['method'], $doc);
+        $schema = $testapi->getResponseSchema($operation, $doc);
+        $args['data'] = $testapi->buildResponse('response', $schema);
         // start by dereferencing components
         $doc['components'] = TestApi::dereference($doc['components'], $doc);
         $args['doc'] = TestApi::dereference($doc, $doc);

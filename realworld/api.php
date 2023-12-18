@@ -41,22 +41,24 @@ sys::init();
 
 /**
  * Summary of send_openapi
+ * @param mixed $restHandler
  * @return void
  */
-function send_openapi()
+function send_openapi($restHandler)
 {
-    $result = TestApi::getOpenAPI();
-    DataObjectRESTHandler::output($result);
+    $result = $restHandler->getOpenAPI();
+    $restHandler->emitResponse($result);
 }
 
 /**
  * Summary of get_dispatcher
+ * @param mixed $restHandler
  * @return FastRoute\Dispatcher
  */
-function get_dispatcher()
+function get_dispatcher($restHandler)
 {
-    $dispatcher = FastRoute\simpleDispatcher(function (FastRoute\RouteCollector $r) {
-        TestApi::registerRoutes($r);
+    $dispatcher = FastRoute\simpleDispatcher(function (FastRoute\RouteCollector $r) use ($restHandler) {
+        $restHandler->registerRoutes($r);
     });
     return $dispatcher;
 }
@@ -65,11 +67,12 @@ function get_dispatcher()
  * Summary of dispatch_request
  * @param string $method
  * @param string $path
+ * @param FastRoute\Dispatcher $dispatcher
+ * @param mixed $restHandler
  * @return void
  */
-function dispatch_request($method, $path)
+function dispatch_request($method, $path, $dispatcher, $restHandler)
 {
-    $dispatcher = get_dispatcher();
     $routeInfo = $dispatcher->dispatch($method, $path);
     switch ($routeInfo[0]) {
         case FastRoute\Dispatcher::NOT_FOUND:
@@ -87,19 +90,19 @@ function dispatch_request($method, $path)
             $vars = $routeInfo[2];
             // ... call $handler with $vars
             try {
-                $result = DataObjectRESTHandler::callHandler($handler, $vars);
-                DataObjectRESTHandler::output($result);
+                [$result, $context] = $restHandler->callHandler($handler, $vars);
+                $restHandler->emitResponse($result, 200, $context);
             } catch (UnauthorizedOperationException $e) {
-                DataObjectRESTHandler::output('This operation is unauthorized, please authenticate.', 401);
+                $restHandler->emitResponse('This operation is unauthorized, please authenticate.', 401);
             } catch (ForbiddenOperationException $e) {
-                DataObjectRESTHandler::output('This operation is forbidden.', 403);
+                $restHandler->emitResponse('This operation is forbidden.', 403);
             } catch (Throwable $e) {
                 $result = "Exception: " . $e->getMessage();
                 if ($e->getPrevious() !== null) {
                     $result .= "\nPrevious: " . $e->getPrevious()->getMessage();
                 }
                 $result .= "\nTrace:\n" . $e->getTraceAsString();
-                DataObjectRESTHandler::output($result, 422);
+                $restHandler->emitResponse($result, 422);
             }
             break;
     }
@@ -107,15 +110,21 @@ function dispatch_request($method, $path)
 
 /**
  * Summary of try_handler
+ * @param mixed $restHandler
  * @return void
  */
-function try_handler()
+function try_handler($restHandler)
 {
     if (empty($_SERVER['PATH_INFO'])) {
-        send_openapi();
+        send_openapi($restHandler);
     } else {
-        dispatch_request($_SERVER['REQUEST_METHOD'], $_SERVER['PATH_INFO']);
+        $dispatcher = get_dispatcher($restHandler);
+        dispatch_request($_SERVER['REQUEST_METHOD'], $_SERVER['PATH_INFO'], $dispatcher, $restHandler);
     }
 }
 
-try_handler();
+// the openapi.json file for the api being tested
+$openApiFile = __DIR__ . '/api/openapi.json';
+
+$restHandler = new TestApi($openApiFile);
+try_handler($restHandler);

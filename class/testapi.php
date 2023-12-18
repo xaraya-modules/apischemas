@@ -2,7 +2,7 @@
 /**
  * @package modules\apischemas
  * @category Xaraya Web Applications Framework
- * @version 2.4.0
+ * @version 2.4.1
  * @copyright see the html/credits.html file in this release
  * @license GPL {@link http://www.gnu.org/licenses/gpl.html}
  * @link https://github.com/mikespub/xaraya-modules
@@ -15,18 +15,25 @@ namespace Xaraya\Modules\ApiSchemas;
 //require_once dirname(__DIR__).'/vendor/autoload.php';
 //use Vural\OpenAPIFaker\OpenAPIFaker;
 //use OpenAPIServer\Mock\OpenApiDataMocker;
+use Xaraya\Core\Traits\ContextInterface;
+use Xaraya\Core\Traits\ContextTrait;
+use Xaraya\Structures\Context;
 use FastRoute\RouteCollector;
+use DataObjectRESTHandler;
 use BadParameterException;
 use xarServer;
 
 /**
  * Class to test the API schemas
 **/
-class TestApi
+class TestApi implements ContextInterface
 {
+    use ContextTrait;
+
     public static string $endpoint = 'api.php';
     /** @var array<string, mixed> */
-    public static array $operations = [];
+    public array $operations = [];
+    public string $openApiFile;
 
     /**
      * De-reference OpenAPI document
@@ -54,23 +61,31 @@ class TestApi
     }
 
     /**
+     * @param string $openApiFile
+     */
+    public function __construct($openApiFile = null)
+    {
+        $this->openApiFile = $openApiFile ?? dirname(__DIR__) . '/realworld/api/openapi.json';
+    }
+
+    /**
      * Get OpenAPI file path
      * @return string openapi file
      */
-    public static function getOpenAPIFile()
+    public function getOpenAPIFile()
     {
-        return dirname(__DIR__) . '/realworld/api/openapi.json';
+        return $this->openApiFile;
     }
 
     /**
      * Get OpenAPI document as array
      * @param mixed $vars
-     * @param mixed $request
+     * @param mixed $context
      * @return array<string, mixed>
      */
-    public static function getOpenAPI($vars = [], &$request = null)
+    public function getOpenAPI($vars = [], $context = null)
     {
-        $openapi = static::getOpenAPIFile();
+        $openapi = $this->getOpenAPIFile();
         $content = file_get_contents($openapi);
         $doc = json_decode($content, true);
         $doc['servers'][0]['url'] = static::getBaseURL();
@@ -97,16 +112,16 @@ class TestApi
      * @param array<string, mixed> $args
      * @return mixed
      */
-    public static function handleRequest($args)
+    public function handleRequest($args)
     {
         //return $args;
         $path = $args['server']['PATH_INFO'] ?? '';
         $method = $args['server']['REQUEST_METHOD'];
-        $doc = static::getOpenAPI();
-        $operation = static::findOperation($path, $method, $doc);
-        $schema = static::getResponseSchema($operation, $doc);
-        $path_vars = $args['path'];
-        return static::buildResponse('response', $schema);
+        $doc = $this->getOpenAPI();
+        $operation = $this->findOperation($path, $method, $doc);
+        $schema = $this->getResponseSchema($operation, $doc);
+        $path_vars = $args['path'] ?? [];
+        return $this->buildResponse('response', $schema);
     }
 
     /**
@@ -117,7 +132,7 @@ class TestApi
      * @throws BadParameterException
      * @return array<string, mixed>
      */
-    public static function findOperation($path, $method, $doc)
+    public function findOperation($path, $method, $doc)
     {
         // check exact match with static paths first
         if (array_key_exists($path, $doc['paths'])) {
@@ -162,16 +177,16 @@ class TestApi
      * @throws BadParameterException
      * @return mixed
      */
-    public static function __callStatic(string $method, array $args)
+    public function __call(string $method, array $args)
     {
-        if (!array_key_exists($method, static::$operations)) {
+        if (!array_key_exists($method, $this->operations)) {
             throw new BadParameterException($method, 'Invalid operation #(1)');
         }
         //return ['method' => $method, 'args' => $args];
-        $operation = static::$operations[$method];
-        $schema = static::getResponseSchema($operation);
-        $path_vars = $args['path'];
-        return static::buildResponse('response', $schema);
+        $operation = $this->operations[$method];
+        $schema = $this->getResponseSchema($operation);
+        $path_vars = $args['path'] ?? [];
+        return $this->buildResponse('response', $schema);
     }
 
     /**
@@ -182,10 +197,10 @@ class TestApi
      * @param string $mediaType
      * @return array<string, mixed>
      */
-    public static function getResponseSchema($operation, $doc = null, $statusCode = '200', $mediaType = 'application/json')
+    public function getResponseSchema($operation, $doc = null, $statusCode = '200', $mediaType = 'application/json')
     {
         $response = $operation['responses'][$statusCode];
-        $doc ??= static::getOpenAPI();
+        $doc ??= $this->getOpenAPI();
         $response = static::dereference($response, $doc);
         return $response['content'][$mediaType]['schema'];
     }
@@ -197,19 +212,19 @@ class TestApi
      * @param integer $count
      * @return mixed
      */
-    public static function buildResponse($name, $schema, $count = 2)
+    public function buildResponse($name, $schema, $count = 2)
     {
         switch ($schema['type']) {
             case 'array':
                 $items = [];
                 for ($i = 0; $i < $count; $i++) {
-                    array_push($items, static::buildResponse($name . '[' . strval($i) . ']', $schema['items']));
+                    array_push($items, $this->buildResponse($name . '[' . strval($i) . ']', $schema['items']));
                 }
                 return $items;
             case 'object':
                 $item = [];
                 foreach ($schema['properties'] as $propname => $property) {
-                    $item[$propname] = static::buildResponse($propname, $property);
+                    $item[$propname] = $this->buildResponse($propname, $property);
                 }
                 return $item;
             case 'string':
@@ -230,22 +245,55 @@ class TestApi
     }
 
     /**
+     * Summary of callHandler - different processing for REST API - see rst.php
+     * @param mixed $handler
+     * @param array<string, mixed> $vars
+     * @param mixed $request
+     * @return mixed
+     */
+    public function callHandler($handler, $vars, &$request = null)
+    {
+        return DataObjectRESTHandler::callHandler($handler, $vars, $request);
+    }
+
+    /**
+     * Send Content-Type and JSON result to the browser
+     * @param mixed $result
+     * @param mixed $status
+     * @param mixed $context
+     * @return void
+     */
+    public function emitResponse($result, $status = 200, $context = null)
+    {
+        /**
+        if (is_array($result) && !empty($context)) {
+            $result['context'] = [];
+            foreach ($context as $key => $value) {
+                $result['context'][$key] = json_encode($value, JSON_PRETTY_PRINT);
+            }
+        }
+         */
+        DataObjectRESTHandler::output($result, $status, $context);
+    }
+
+    /**
      * Register REST API routes (in FastRoute format) - see realworld/api.php
      * @param RouteCollector $r
      * @return void
      */
-    public static function registerRoutes($r)
+    public function registerRoutes($r)
     {
-        $doc = static::getOpenAPI();
+        // @todo move away from static methods for context
+        $doc = $this->getOpenAPI();
         foreach ($doc['paths'] as $path => $ops) {
             foreach ($ops as $method => $operation) {
                 if (empty($operation['operationId'])) {
                     $operation['operationId'] = ucfirst($method) . strtr(ucwords(implode(' ', explode('/', strtr($path, '{}')))), ' ');
                 }
-                //$r->addRoute(strtoupper($method), $path, [static::class, 'handleRequest']);
+                //$r->addRoute(strtoupper($method), $path, [$this, 'handleRequest']);
                 $handleOperation = 'handle' . $operation['operationId'];
-                static::$operations[$handleOperation] = $operation;
-                $r->addRoute(strtoupper($method), $path, [static::class, $handleOperation]);
+                $this->operations[$handleOperation] = $operation;
+                $r->addRoute(strtoupper($method), $path, [$this, $handleOperation]);
             }
         }
     }
