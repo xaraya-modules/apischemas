@@ -12,31 +12,17 @@
 
 namespace Xaraya\Modules\ApiSchemas;
 
+use Xaraya\DataObject\Traits\UserGuiInterface;
+use Xaraya\DataObject\Traits\UserGuiTrait;
 use sys;
 
 sys::import('modules.dynamicdata.class.objects.factory');
+sys::import('modules.dynamicdata.class.traits.usergui');
 
 /**
- * Class to manage the API schemas
+ * Class instance to handle the ApiSchemas User GUI
 **/
-class UserGui
+class UserGui implements UserGuiInterface
 {
-    /**
-     * Summary of init
-     * @param array<string, mixed> $args
-     * @return void
-     */
-    public static function init(array $args = [])
-    {
-    }
-
-    /**
-     * Summary of main
-     * @param array<string, mixed> $args
-     * @return array<mixed>
-     */
-    public static function main(array $args = [])
-    {
-        return $args;
-    }
+    use UserGuiTrait;
 }

@@ -19,7 +19,7 @@ use sys;
 sys::import('modules.dynamicdata.class.traits.userapi');
 
 /**
- * Class to manage the API schemas
+ * Class to handle the ApiSchemas User API (static for now)
 **/
 class UserApi implements UserApiInterface
 {

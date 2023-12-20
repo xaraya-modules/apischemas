@@ -24,9 +24,9 @@ use BadParameterException;
 use xarServer;
 
 /**
- * Class to test the API schemas
+ * Generic REST API handler based on openapi.json file to test the API schemas
 **/
-class TestApi implements ContextInterface
+class TestApiHandler implements ContextInterface
 {
     use ContextTrait;
 
@@ -288,7 +288,7 @@ class TestApi implements ContextInterface
         foreach ($doc['paths'] as $path => $ops) {
             foreach ($ops as $method => $operation) {
                 if (empty($operation['operationId'])) {
-                    $operation['operationId'] = ucfirst($method) . strtr(ucwords(implode(' ', explode('/', strtr($path, '{}')))), ' ');
+                    $operation['operationId'] = ucfirst($method) . strtr(ucwords(implode(' ', explode('/', strtr($path, '{}', '')))), ' ', '');
                 }
                 //$r->addRoute(strtoupper($method), $path, [$this, 'handleRequest']);
                 $handleOperation = 'handle' . $operation['operationId'];

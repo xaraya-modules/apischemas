@@ -21,7 +21,7 @@ require_once $baseDir . '/vendor/autoload.php';
 //use FastRoute\Dispatcher;
 //use FastRoute\RouteCollector;
 //use function FastRoute\simpleDispatcher;
-use Xaraya\Modules\ApiSchemas\TestApi;
+use Xaraya\Modules\ApiSchemas\TestApiHandler;
 
 if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     DataObjectRESTHandler::sendCORSOptions();
@@ -126,5 +126,5 @@ function try_handler($restHandler)
 // the openapi.json file for the api being tested
 $openApiFile = __DIR__ . '/api/openapi.json';
 
-$restHandler = new TestApi($openApiFile);
+$restHandler = new TestApiHandler($openApiFile);
 try_handler($restHandler);

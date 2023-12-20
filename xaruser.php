@@ -17,11 +17,14 @@ use Xaraya\Modules\ApiSchemas\TestGui;
  *
  * @uses UserGui::main()
  * @param array<string, mixed> $args
+ * @param mixed $context
  * @return mixed template output in HTML
  */
-function apischemas_user_main(array $args = [])
+function apischemas_user_main(array $args = [], $context = null)
 {
-    return UserGui::main($args);
+    $usergui = new UserGui();
+    $usergui->setContext($context);
+    return $usergui->main($args);
 }
 
 /**
@@ -29,10 +32,13 @@ function apischemas_user_main(array $args = [])
  *
  * @uses TestGui::main()
  * @param array<string, mixed> $args
+ * @param mixed $context
  * @return mixed template output in HTML
  */
-function apischemas_user_test(array $args = [])
+function apischemas_user_test(array $args = [], $context = null)
 {
-    TestGui::init();
-    return TestGui::main($args);
+    $testgui = new TestGui();
+    $testgui->init();
+    $testgui->setContext($context);
+    return $testgui->main($args);
 }

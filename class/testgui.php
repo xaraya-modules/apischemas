@@ -18,16 +18,16 @@ namespace Xaraya\Modules\ApiSchemas;
 use sys;
 
 /**
- * Class to test the API schemas
+ * Class instance to handle the ApiSchemas Test GUI
 **/
-class TestGui
+class TestGui extends UserGui
 {
     /**
      * Initialize test with composer autoload
      * @param array<string, mixed> $args
      * @return void
      */
-    public static function init(array $args = [])
+    public function init(array $args = [])
     {
         sys::autoload();
     }
@@ -37,18 +37,18 @@ class TestGui
      * @param array<string, mixed> $args
      * @return array<mixed>
      */
-    public static function main(array $args = [])
+    public function main(array $args = [])
     {
         $args['path'] ??= '/articles/feed';
         $args['method'] ??= 'GET';
-        $testapi = new TestApi();
+        $testapi = new TestApiHandler();
         $doc = $testapi->getOpenAPI();
         $operation = $testapi->findOperation($args['path'], $args['method'], $doc);
         $schema = $testapi->getResponseSchema($operation, $doc);
         $args['data'] = $testapi->buildResponse('response', $schema);
         // start by dereferencing components
-        $doc['components'] = TestApi::dereference($doc['components'], $doc);
-        $args['doc'] = TestApi::dereference($doc, $doc);
+        $doc['components'] = TestApiHandler::dereference($doc['components'], $doc);
+        $args['doc'] = TestApiHandler::dereference($doc, $doc);
         return $args;
     }
 }
