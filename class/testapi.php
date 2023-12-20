@@ -17,7 +17,6 @@ namespace Xaraya\Modules\ApiSchemas;
 //use OpenAPIServer\Mock\OpenApiDataMocker;
 use Xaraya\Core\Traits\ContextInterface;
 use Xaraya\Core\Traits\ContextTrait;
-use Xaraya\Structures\Context;
 use FastRoute\RouteCollector;
 use DataObjectRESTHandler;
 use BadParameterException;
