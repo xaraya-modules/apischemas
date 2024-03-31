@@ -1,0 +1,27 @@
+{# @apischemas/main.html.twig #}
+
+{% extends '@apischemas/base.html.twig' %}
+
+{% block modulespace %}
+<div class="xar-mod-head">
+        <span class="xar-mod-title">
+            API Schemas
+        </span>
+    </div>
+    <div class="xar-mod-body">
+        <div class="xar-mod-object-head">
+            <h2>View API Schemas</h2>
+        </div>
+        {# <!-- show the list of main objects --> #}
+        <div class="xar-mod-object-body">
+            {# <!-- xar:template type="module" file="main_objects"/--> #}
+            <ul>
+                <li>Try out the <a href="code/modules/apischemas/swagger-ui/index.html">Swagger UI (OpenAPI)</a></li>
+                <li>Try out the <a href="code/modules/apischemas/playground/index.html">GraphQL Playground</a></li>
+                <li>Try out the <a href="code/modules/apischemas/datatables/index.html">DataTables (OpenAPI)</a></li>
+                <li>Try out the <a href="code/modules/apischemas/php-crud-api/index.php/openapi">PHP-CRUD-API</a></li>
+                <li>Try out the <a href="{{ xar_moduleurl('apischemas', 'user', 'test') }}">RealWorld API Test</a> - <a href="code/modules/apischemas/realworld/api.php">API</a></li>
+            </ul>
+        </div>
+    </div>
+{% endblock %}

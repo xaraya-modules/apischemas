@@ -1,0 +1,67 @@
+{# @apischemas/test.html.twig #}
+
+{% extends '@apischemas/base.html.twig' %}
+
+{% block modulespace %}
+<div class="xar-mod-head">
+        <span class="xar-mod-title">
+            API Schemas
+        </span>
+    </div>
+    <div class="xar-mod-body">
+        <div class="xar-mod-object-head">
+            <h2>Test API Schemas</h2>
+        </div>
+        <div class="xar-mod-object-body">
+            <h3>Result: {{ method }} {{ path }}</h3>
+            <pre>
+            {% set value = data|json_encode(constant('JSON_PRETTY_PRINT')) %}
+            {{ value }}
+            </pre>
+            <h3>Info</h3>
+            <ul>
+                {% for k, v in doc['info'] %}
+                    {% if v is iterable %}
+                        <li>{{ k|title }}:
+                            <ul>
+                            {% for key, value in v %}
+                                <li>{{ key|title }}: {{ value }}</li>
+                            {% endfor %}
+                            </ul>
+                        </li>
+                    {% else %}
+                        <li>{{ k|title }}: {{ v }}</li>
+                    {% endif %}
+                {% endfor %}
+            </ul>
+            <h3>Paths</h3>
+            <ul>
+                {% for docpath, ops in doc['paths'] %}
+                    <li>{{ docpath }}:
+                        <ul>
+                        {% for method, op in ops %}
+                            {% if method == 'get' %}
+                                <li><a href="{{ xar_currenturl({'path': docpath}) }}">{{ method }}</a> ({{ op['operationId'] }}): {{ op['description'] }}</li>
+                            {% else %}
+                                <li>{{ method }} ({{ op['operationId'] }}): {{ op['description'] }}</li>
+                            {% endif %}
+                        {% endfor %}
+                        </ul>
+                    </li>
+                {% endfor %}
+            </ul>
+            <h3>Schemas</h3>
+            <ul>
+                {% for schema, info in doc['components']['schemas'] %}
+                    <li>{{ schema }}:
+                        <ul>
+                        {% for name, prop in info['properties'] %}
+                            <li>{{ name }}: {{ prop|json_encode() }}</li>
+                        {% endfor %}
+                        </ul>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+{% endblock %}

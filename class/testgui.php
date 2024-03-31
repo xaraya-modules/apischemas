@@ -19,6 +19,7 @@ use sys;
 
 /**
  * Class instance to handle the ApiSchemas Test GUI
+ * @uses \sys::autoload()
 **/
 class TestGui extends UserGui
 {
@@ -49,6 +50,8 @@ class TestGui extends UserGui
         // start by dereferencing components
         $doc['components'] = TestApiHandler::dereference($doc['components'], $doc);
         $args['doc'] = TestApiHandler::dereference($doc, $doc);
+        // Pass along the context for xarTpl::module() if needed
+        $args['context'] ??= $this->getContext();
         return $args;
     }
 }

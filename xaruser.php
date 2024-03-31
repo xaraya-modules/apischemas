@@ -33,6 +33,7 @@ function apischemas_user_main(array $args = [], $context = null)
  * @uses TestGui::main()
  * @param array<string, mixed> $args
  * @param mixed $context
+ * @uses \sys::autoload()
  * @return mixed template output in HTML
  */
 function apischemas_user_test(array $args = [], $context = null)
