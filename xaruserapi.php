@@ -16,9 +16,9 @@ use Xaraya\Modules\ApiSchemas\UserApi;
  * @param array<string, mixed> $args array of optional parameters
  * @return array<mixed> the itemtypes of this module and their description
  */
-function apischemas_userapi_getitemtypes(array $args = [])
+function apischemas_userapi_getitemtypes(array $args = [], $context = null)
 {
-    return UserApi::getItemTypes($args);
+    return UserApi::getItemTypes($args, $context);
 }
 
 /**
@@ -29,7 +29,7 @@ function apischemas_userapi_getitemtypes(array $args = [])
  *        array    $args['itemids'] array of item ids to get
  * @return array<mixed> containing the itemlink(s) for the item(s).
  */
-function apischemas_userapi_getitemlinks(array $args = [])
+function apischemas_userapi_getitemlinks(array $args = [], $context = null)
 {
-    return UserApi::getItemLinks($args);
+    return UserApi::getItemLinks($args, $context);
 }
