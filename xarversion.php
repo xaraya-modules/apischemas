@@ -28,4 +28,10 @@ $modversion['category']       = 'Miscellaneous';
 $modversion['namespace']      = 'Xaraya\Modules\ApiSchemas';
 $modversion['securityschema'] = [];
 $modversion['dependency']     = [];
-$modversion['dependencyinfo'] = [];
+$modversion['twigtemplates']  = true;
+$modversion['dependencyinfo'] = [
+    0 => [
+        'name' => 'Xaraya Core',
+        'version_ge' => '2.4.1',
+    ],
+];
