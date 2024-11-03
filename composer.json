@@ -6,7 +6,7 @@
     "license": "GPL-2.0-or-later",
     "require": {
         "mevdschee/php-crud-api": "^2.14",
-        "nikic/fast-route": "dev-master"
+        "nikic/fast-route": "2.0.0-beta1"
     },
     "autoload": {
         "classmap": ["./"],
