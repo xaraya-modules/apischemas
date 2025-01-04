@@ -11,7 +11,7 @@
 $modversion = [];
 $modversion['name']           = 'apischemas';
 $modversion['id']             = '18252';
-$modversion['version']        = '2.4.4';
+$modversion['version']        = '2.5.3';
 $modversion['displayname']    = 'API Schemas';
 $modversion['description']    = 'Play with API schemas';
 $modversion['credits']        = '';
