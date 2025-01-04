@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package modules\apischemas
  * @category Xaraya Web Applications Framework

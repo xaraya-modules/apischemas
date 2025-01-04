@@ -3,7 +3,7 @@
 /**
  * @package modules\apischemas
  * @category Xaraya Web Applications Framework
- * @version 2.4.0
+ * @version 2.5.3
  * @copyright see the html/credits.html file in this release
  * @license GPL {@link http://www.gnu.org/licenses/gpl.html}
  * @link https://github.com/mikespub/xaraya-modules
@@ -13,16 +13,13 @@
 
 namespace Xaraya\Modules\ApiSchemas;
 
-use Xaraya\DataObject\Traits\UserApiInterface;
-use Xaraya\DataObject\Traits\UserApiTrait;
-use sys;
-
-sys::import('modules.dynamicdata.class.traits.userapi');
+use Xaraya\Core\Traits\ModuleInterface;
+use Xaraya\Core\Traits\ModuleTrait;
 
 /**
- * Class to handle the ApiSchemas User API (static for now)
-**/
-class UserApi implements UserApiInterface
+ * Get apischemas module classes via xarMod::getModule()
+ */
+class Module implements ModuleInterface
 {
-    use UserApiTrait;
+    use ModuleTrait;
 }

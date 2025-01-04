@@ -7,9 +7,7 @@
  * @license GPL {@link http://www.gnu.org/licenses/gpl.html}
  * @link http://xaraya.info/index.php/release/182.html
  */
-sys::import('modules.apischemas.class.usergui');
 sys::import('modules.apischemas.class.testgui');
-use Xaraya\Modules\ApiSchemas\UserGui;
 use Xaraya\Modules\ApiSchemas\TestGui;
 
 /**
@@ -22,7 +20,7 @@ use Xaraya\Modules\ApiSchemas\TestGui;
  */
 function apischemas_user_main(array $args = [], $context = null)
 {
-    $usergui = new UserGui();
+    $usergui = xarMod::getGUI('apischemas');
     $usergui->setContext($context);
     return $usergui->main($args);
 }
@@ -38,7 +36,7 @@ function apischemas_user_main(array $args = [], $context = null)
  */
 function apischemas_user_test(array $args = [], $context = null)
 {
-    $testgui = new TestGui();
+    $testgui = new TestGui('apischemas');
     $testgui->init();
     $testgui->setContext($context);
     return $testgui->main($args);

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package modules\apischemas
  * @category Xaraya Web Applications Framework
@@ -16,6 +17,8 @@ namespace Xaraya\Modules\ApiSchemas;
 //use Vural\OpenAPIFaker\OpenAPIFaker;
 //use OpenAPIServer\Mock\OpenApiDataMocker;
 use sys;
+
+sys::import('modules.apischemas.class.usergui');
 
 /**
  * Class instance to handle the ApiSchemas Test GUI
