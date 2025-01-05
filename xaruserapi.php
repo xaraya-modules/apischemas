@@ -18,7 +18,7 @@ function apischemas_userapi_getitemtypes(array $args = [], $context = null)
 {
     $userapi = xarMod::getAPI('apischemas');
     $userapi->setContext($context);
-    return $userapi->getItemTypes($args, $context);
+    return $userapi->getItemTypes($args);
 }
 
 /**
@@ -33,5 +33,5 @@ function apischemas_userapi_getitemlinks(array $args = [], $context = null)
 {
     $userapi = xarMod::getAPI('apischemas');
     $userapi->setContext($context);
-    return $userapi->getItemLinks($args, $context);
+    return $userapi->getItemLinks($args);
 }
