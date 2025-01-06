@@ -13,8 +13,8 @@
 
 namespace Xaraya\Modules\ApiSchemas;
 
-use Xaraya\Core\Traits\ModuleInterface;
-use Xaraya\Core\Traits\ModuleTrait;
+use Xaraya\Modules\ModuleInterface;
+use Xaraya\Modules\ModuleTrait;
 
 /**
  * Get apischemas module classes via xarMod::getModule()
