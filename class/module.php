@@ -13,13 +13,17 @@
 
 namespace Xaraya\Modules\ApiSchemas;
 
-use Xaraya\Modules\ModuleInterface;
-use Xaraya\Modules\ModuleTrait;
+use Xaraya\Modules\ModuleClass;
 
 /**
  * Get apischemas module classes via xarMod::getModule()
  */
-class Module implements ModuleInterface
+class Module extends ModuleClass
 {
-    use ModuleTrait;
+    public function setClassTypes(): void
+    {
+        parent::setClassTypes();
+        // add other class types for this module
+        //$this->classtypes['testapi'] = 'TestApi';
+    }
 }

@@ -3,7 +3,7 @@
 /**
  * @package modules\apischemas
  * @category Xaraya Web Applications Framework
- * @version 2.4.0
+ * @version 2.5.6
  * @copyright see the html/credits.html file in this release
  * @license GPL {@link http://www.gnu.org/licenses/gpl.html}
  * @link https://github.com/mikespub/xaraya-modules
@@ -15,6 +15,7 @@ namespace Xaraya\Modules\ApiSchemas;
 
 use Xaraya\DataObject\Traits\UserGuiInterface;
 use Xaraya\DataObject\Traits\UserGuiTrait;
+use Xaraya\Modules\ApiSchemas\TestGui;
 use sys;
 
 sys::import('modules.dynamicdata.class.objects.factory');
@@ -26,4 +27,21 @@ sys::import('modules.dynamicdata.class.traits.usergui');
 class UserGui implements UserGuiInterface
 {
     use UserGuiTrait;
+
+    /**
+     * User test
+     *
+     * @uses TestGui::main()
+     * @param array<string, mixed> $args
+     * @uses \sys::autoload()
+     * @return mixed template output in HTML
+     */
+    public function test(array $args = [])
+    {
+        sys::import('modules.apischemas.class.testgui');
+        $testgui = new TestGui('apischemas');
+        $testgui->init();
+        $testgui->setContext($this->getContext());
+        return $testgui->main($args);
+    }
 }
