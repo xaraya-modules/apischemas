@@ -23,6 +23,7 @@ sys::import('xaraya.modules.installer');
 
 /**
  * Handle module installer functions
+ * @extends InstallerClass<Module>
  */
 class Installer extends InstallerClass
 {

@@ -20,9 +20,10 @@ use sys;
 sys::import('modules.dynamicdata.class.traits.userapi');
 
 /**
- * Class to handle the ApiSchemas User API (static for now)
+ * Class to handle the ApiSchemas User API
 **/
 class UserApi implements UserApiInterface
 {
+    /** @use UserApiTrait<Module> */
     use UserApiTrait;
 }

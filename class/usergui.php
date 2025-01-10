@@ -26,6 +26,7 @@ sys::import('modules.dynamicdata.class.traits.usergui');
 **/
 class UserGui implements UserGuiInterface
 {
+    /** @use UserGuiTrait<Module> */
     use UserGuiTrait;
 
     /**

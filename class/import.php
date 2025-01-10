@@ -47,6 +47,7 @@ class Import
     protected static array $inherit = [];
     /** @var array<string, mixed> */
     protected static array $objects = [];
+    protected static string $basedir;
 
     /**
      * Summary of init
@@ -58,10 +59,11 @@ class Import
         if (isset(self::$schemas)) {
             return;
         }
+        self::$basedir = dirname(__DIR__);
         self::getPropertyTypeIds();
-        self::$schemas = dirname(__DIR__) . '/resources/schemas';
-        self::$fixtures = dirname(__DIR__) . '/resources/fixtures';
-        self::$mapping = dirname(__DIR__) . '/resources/mapping.json';
+        self::$schemas = self::$basedir . '/resources/schemas';
+        self::$fixtures = self::$basedir . '/resources/fixtures';
+        self::$mapping = self::$basedir . '/resources/mapping.json';
         self::getMapping();
         self::getObjects();
     }
