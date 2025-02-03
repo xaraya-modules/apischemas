@@ -22,9 +22,10 @@ require_once $baseDir . '/vendor/autoload.php';
 //use FastRoute\RouteCollector;
 //use function FastRoute\simpleDispatcher;
 use Xaraya\Modules\ApiSchemas\TestApiHandler;
+use Xaraya\Bridge\RestAPI\RestAPIHandler;
 
 if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
-    DataObjectRESTHandler::sendCORSOptions();
+    RestAPIHandler::sendCORSOptions();
     return;
 }
 

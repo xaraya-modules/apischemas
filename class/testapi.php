@@ -19,7 +19,7 @@ namespace Xaraya\Modules\ApiSchemas;
 use Xaraya\Context\ContextInterface;
 use Xaraya\Context\ContextTrait;
 use FastRoute\RouteCollector;
-use DataObjectRESTHandler;
+use Xaraya\Bridge\RestAPI\RestAPIHandler;
 use BadParameterException;
 use xarServer;
 
@@ -34,6 +34,7 @@ class TestApiHandler implements ContextInterface
     /** @var array<string, mixed> */
     public array $operations = [];
     public string $openApiFile;
+    protected ?RestAPIHandler $restApiHandler = null;
 
     /**
      * De-reference OpenAPI document
@@ -245,6 +246,16 @@ class TestApiHandler implements ContextInterface
     }
 
     /**
+     * Summary of getRestHandler
+     * @return RestAPIHandler
+     */
+    public function getRestApiHandler()
+    {
+        $this->restApiHandler ??= new RestAPIHandler();
+        return $this->restApiHandler;
+    }
+
+    /**
      * Summary of callHandler - different processing for REST API - see rst.php
      * @param mixed $handler
      * @param array<string, mixed> $vars
@@ -253,7 +264,7 @@ class TestApiHandler implements ContextInterface
      */
     public function callHandler($handler, $vars, &$request = null)
     {
-        return DataObjectRESTHandler::callHandler($handler, $vars, $request);
+        return $this->getRestApiHandler()->callHandler($handler, $vars, $request);
     }
 
     /**
@@ -273,7 +284,7 @@ class TestApiHandler implements ContextInterface
             }
         }
          */
-        DataObjectRESTHandler::output($result, $status, $context);
+        $this->getRestApiHandler()->output($result, $status, $context);
     }
 
     /**
