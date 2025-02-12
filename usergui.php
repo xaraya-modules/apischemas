@@ -39,7 +39,7 @@ class UserGui implements UserGuiInterface
      */
     public function test(array $args = [])
     {
-        sys::import('modules.apischemas.class.testgui');
+        sys::import('modules.apischemas.testgui');
         $testgui = new TestGui('apischemas');
         $testgui->init();
         $testgui->setContext($this->getContext());

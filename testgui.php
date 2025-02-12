@@ -18,7 +18,7 @@ namespace Xaraya\Modules\ApiSchemas;
 //use OpenAPIServer\Mock\OpenApiDataMocker;
 use sys;
 
-sys::import('modules.apischemas.class.usergui');
+sys::import('modules.apischemas.usergui');
 
 /**
  * Class instance to handle the ApiSchemas Test GUI
