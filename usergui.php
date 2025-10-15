@@ -15,7 +15,6 @@ namespace Xaraya\Modules\ApiSchemas;
 
 use Xaraya\Modules\DynamicData\Traits\UserGuiInterface;
 use Xaraya\Modules\DynamicData\Traits\UserGuiTrait;
-use Xaraya\Modules\ApiSchemas\TestGui;
 use sys;
 
 sys::import('modules.dynamicdata.class.objects.factory');
