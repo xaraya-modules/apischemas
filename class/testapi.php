@@ -16,15 +16,17 @@ namespace Xaraya\Modules\ApiSchemas;
 //require_once dirname(__DIR__).'/vendor/autoload.php';
 //use Vural\OpenAPIFaker\OpenAPIFaker;
 //use OpenAPIServer\Mock\OpenApiDataMocker;
+use Xaraya\Context\ContextFactory;
 use Xaraya\Context\ContextInterface;
 use Xaraya\Context\ContextTrait;
-use FastRoute\RouteCollector;
 use Xaraya\Bridge\RestAPI\RestAPIHandler;
+use Xaraya\Bridge\RestAPI\RestAPIRoutes;
 use BadParameterException;
 use xarServer;
 
 /**
  * Generic REST API handler based on openapi.json file to test the API schemas
+ * @phpstan-import-type RouteDef from RestAPIRoutes
 **/
 class TestApiHandler implements ContextInterface
 {
@@ -115,13 +117,11 @@ class TestApiHandler implements ContextInterface
      */
     public function handleRequest($args)
     {
-        //return $args;
         $path = $args['server']['PATH_INFO'] ?? '';
         $method = $args['server']['REQUEST_METHOD'];
         $doc = $this->getOpenAPI();
         $operation = $this->findOperation($path, $method, $doc);
         $schema = $this->getResponseSchema($operation, $doc);
-        $path_vars = $args['path'] ?? [];
         return $this->buildResponse('response', $schema);
     }
 
@@ -172,6 +172,35 @@ class TestApiHandler implements ContextInterface
     }
 
     /**
+     * Get operation by name
+     * @param string $name
+     * @throws \BadParameterException
+     * @return array<string, mixed>
+     */
+    public function getOperation($name)
+    {
+        if (empty($this->operations)) {
+            $this->getRoutes();
+        }
+        // check for operation handler
+        if (!array_key_exists($name, $this->operations)) {
+            throw new BadParameterException($name, 'Invalid operation #(1)');
+        }
+        return $this->operations[$name];
+    }
+
+    /**
+     * Add operation by name
+     * @param string $name
+     * @param array<string, mixed> $operation
+     * @return void
+     */
+    public function addOperation($name, $operation)
+    {
+        $this->operations[$name] = $operation;
+    }
+
+    /**
      * Magic method to call specific operation handler - no need to find matching operation here
      * @param string $method
      * @param array<string, mixed> $args
@@ -180,13 +209,9 @@ class TestApiHandler implements ContextInterface
      */
     public function __call(string $method, array $args)
     {
-        if (!array_key_exists($method, $this->operations)) {
-            throw new BadParameterException($method, 'Invalid operation #(1)');
-        }
-        //return ['method' => $method, 'args' => $args];
-        $operation = $this->operations[$method];
+        // get operation by name
+        $operation = $this->getOperation($method);
         $schema = $this->getResponseSchema($operation);
-        $path_vars = $args['path'] ?? [];
         return $this->buildResponse('response', $schema);
     }
 
@@ -264,48 +289,92 @@ class TestApiHandler implements ContextInterface
      */
     public function callHandler($handler, $vars, &$request = null)
     {
-        return $this->getRestApiHandler()->callHandler($handler, $vars, $request);
+        // return $this->getRestApiHandler()->callHandler($handler, $vars, $request);
+        $context = ContextFactory::fromRequest($request, __METHOD__);
+        $context['mediatype'] = '';
+        $this->setContext($context);
+        // get handler instance with context
+        $handler = $this->resolveHandler($handler, $context);
+        $result = $handler($vars);
+        return [$result, $context];
+    }
+
+    /**
+     * Summary of resolveHandler
+     * @param mixed $handler
+     * @param mixed $context
+     * @throws \BadParameterException
+     * @return mixed
+     */
+    public function resolveHandler($handler, &$context)
+    {
+        if (is_array($handler) && is_string($handler[0])) {
+            if (is_a($handler[0], $this::class, true)) {
+                $handler[0] = clone $this;
+                $handler[0]->setContext($context);
+            } else {
+                throw new BadParameterException($handler[0], 'Invalid handler #(1)');
+            }
+        }
+        return $handler;
     }
 
     /**
      * Send Content-Type and JSON result to the browser
      * @param mixed $result
      * @param mixed $status
-     * @param mixed $context
+     * @param mixed $context @deprecated 2.6.3 switch to instance methods
      * @return void
      */
     public function emitResponse($result, $status = 200, $context = null)
     {
-        /**
-        if (is_array($result) && !empty($context)) {
-            $result['context'] = [];
-            foreach ($context as $key => $value) {
-                $result['context'][$key] = json_encode($value, JSON_PRETTY_PRINT);
-            }
-        }
-         */
-        $this->getRestApiHandler()->output($result, $status, $context);
+        $this->output($result, $status);
     }
 
     /**
-     * Register REST API routes (in FastRoute format) - see realworld/api.php
-     * @param RouteCollector $r
+     * Summary of output
+     * @param mixed $result
+     * @param mixed $status
      * @return void
      */
-    public function registerRoutes($r)
+    public function output($result, $status = 200)
     {
-        // @todo move away from static methods for context
+        // $this->getRestApiHandler()->output($result, $status);
+        if (!headers_sent() && $status !== 200) {
+            http_response_code($status);
+        }
+        header('Content-Type: application/json; charset=utf-8');
+        try {
+            echo json_encode($result, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_NUMERIC_CHECK | JSON_THROW_ON_ERROR);
+        } catch (\JsonException $e) {
+            echo '{"JSON Exception": ' . json_encode($e->getMessage()) . '}';
+        }
+    }
+
+    /**
+     * Get REST API routes (in generic format) - see realworld/api.php
+     * @return array<string, RouteDef> array of name => [method(s), path, handler, options = []]
+     */
+    public function getRoutes()
+    {
+        // default handler is $this here - see resolveHandler()
+        $handler = $this::class;
+        $extra = [];
+        $routes = [];
+
         $doc = $this->getOpenAPI();
         foreach ($doc['paths'] as $path => $ops) {
             foreach ($ops as $method => $operation) {
                 if (empty($operation['operationId'])) {
                     $operation['operationId'] = ucfirst($method) . strtr(ucwords(implode(' ', explode('/', strtr($path, '{}', '')))), ' ', '');
                 }
-                //$r->addRoute(strtoupper($method), $path, [$this, 'handleRequest']);
+                // register operation by name + use as handler method in routes
                 $handleOperation = 'handle' . $operation['operationId'];
-                $this->operations[$handleOperation] = $operation;
-                $r->addRoute(strtoupper($method), $path, [$this, $handleOperation]);
+                $this->addOperation($handleOperation, $operation);
+                $routes[$handleOperation] = [strtoupper($method), $path, [$handler, $handleOperation], $extra];
             }
         }
+
+        return $routes;
     }
 }

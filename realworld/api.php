@@ -1,26 +1,29 @@
 <?php
+
 /**
  * Entrypoint for handling REST API calls based on OpenAPI spec
  *
- * Note: this assumes you install fast-route with composer
+ * Note: this assumes you install symfony/routing with composer
  * and use composer autoload in the entrypoint, see e.g. rst.php
  *
- * $ composer require --dev nikic/fast-route
+ * $ composer require --dev symfony/routing symfony/config
  * $ head html/rst.php
  * <?php
  * ...
  * require_once dirname(__DIR__).'/vendor/autoload.php';
  * ...
  *
- * https://github.com/nikic/FastRoute
+ * @see https://github.com/nikic/FastRoute
+ * @see https://github.com/symfony/routing
  */
 $baseDir = dirname(__DIR__, 4);
 require_once $baseDir . '/vendor/autoload.php';
 
-// use the FastRoute library here
-//use FastRoute\Dispatcher;
-//use FastRoute\RouteCollector;
-//use function FastRoute\simpleDispatcher;
+// use the nikic FastRoute library here
+//use Xaraya\Routing\FastRouter;
+// use the Symfony Routing component here
+use Xaraya\Routing\Routing;
+use Xaraya\Routing\RouterInterface;
 use Xaraya\Modules\ApiSchemas\TestApiHandler;
 use Xaraya\Bridge\RestAPI\RestAPIHandler;
 
@@ -42,76 +45,80 @@ sys::init();
 
 /**
  * Summary of send_openapi
- * @param mixed $restHandler
+ * @param TestApiHandler $restHandler
  * @return void
  */
 function send_openapi($restHandler)
 {
+    // move away from static methods for context
     $result = $restHandler->getOpenAPI();
-    $restHandler->emitResponse($result);
+    $restHandler->output($result);
 }
 
 /**
- * Summary of get_dispatcher
- * @param mixed $restHandler
- * @return FastRoute\Dispatcher
+ * Summary of get_router
+ * @param TestApiHandler $restHandler
+ * @return RouterInterface
  */
-function get_dispatcher($restHandler)
+function get_router($restHandler)
 {
-    $dispatcher = FastRoute\simpleDispatcher(function (FastRoute\RouteCollector $r) use ($restHandler) {
-        $restHandler->registerRoutes($r);
-    });
-    return $dispatcher;
+    //$cacheFile = sys::varpath() . '/cache/api/test_api_routes.php';
+    //$router = new FastRouter($restHandler->getRoutes(...), $cacheFile);
+    $cacheFile = null;
+    $router = new Routing($restHandler->getRoutes(...), $cacheFile);
+    return $router;
 }
 
 /**
- * Summary of dispatch_request
+ * Summary of handle_request
  * @param string $method
  * @param string $path
- * @param FastRoute\Dispatcher $dispatcher
- * @param mixed $restHandler
+ * @param RouterInterface $router
+ * @param TestApiHandler $restHandler
  * @return void
  */
-function dispatch_request($method, $path, $dispatcher, $restHandler)
+function handle_request($method, $path, $router, $restHandler)
 {
-    $routeInfo = $dispatcher->dispatch($method, $path);
-    switch ($routeInfo[0]) {
-        case FastRoute\Dispatcher::NOT_FOUND:
-            // ... 404 Not Found
-            http_response_code(404);
-            break;
-        case FastRoute\Dispatcher::METHOD_NOT_ALLOWED:
-            $allowedMethods = $routeInfo[1];
-            // ... 405 Method Not Allowed
-            header('Allow: ' . implode(', ', $allowedMethods));
-            http_response_code(405);
-            break;
-        case FastRoute\Dispatcher::FOUND:
-            $handler = $routeInfo[1];
-            $vars = $routeInfo[2];
-            // ... call $handler with $vars
-            try {
-                [$result, $context] = $restHandler->callHandler($handler, $vars);
-                $restHandler->emitResponse($result, 200, $context);
-            } catch (UnauthorizedOperationException $e) {
-                $restHandler->emitResponse('This operation is unauthorized, please authenticate.', 401);
-            } catch (ForbiddenOperationException $e) {
-                $restHandler->emitResponse('This operation is forbidden.', 403);
-            } catch (Throwable $e) {
-                $result = "Exception: " . $e->getMessage();
-                if ($e->getPrevious() !== null) {
-                    $result .= "\nPrevious: " . $e->getPrevious()->getMessage();
+    // $restHandler::setTimer('register');
+    [$handler, $vars] = $router->match($path, $method);
+    if (empty($handler)) {
+        switch ((string) $vars['status']) {
+            case '404':
+                // ... 404 Not Found
+                http_response_code(404);
+                break;
+            case '405':
+                // ... 405 Method Not Allowed
+                if (!empty($vars['methods'])) {
+                    header('Allow: ' . implode(', ', $vars['methods']));
                 }
-                $result .= "\nTrace:\n" . $e->getTraceAsString();
-                $restHandler->emitResponse($result, 422);
-            }
-            break;
+                http_response_code(405);
+                break;
+        }
+        return;
+    }
+    // $restHandler::setTimer('dispatch');
+    // ... call $handler with $vars
+    try {
+        [$result, $context] = $restHandler->callHandler($handler, $vars);
+        $restHandler->output($result);
+    } catch (UnauthorizedOperationException $e) {
+        $restHandler->output('This operation is unauthorized, please authenticate.', 401);
+    } catch (ForbiddenOperationException $e) {
+        $restHandler->output('This operation is forbidden.', 403);
+    } catch (Throwable $e) {
+        $result = "Exception: " . $e->getMessage();
+        if ($e->getPrevious() !== null) {
+            $result .= "\nPrevious: " . $e->getPrevious()->getMessage();
+        }
+        $result .= "\nTrace:\n" . $e->getTraceAsString();
+        $restHandler->output($result, 422);
     }
 }
 
 /**
  * Summary of try_handler
- * @param mixed $restHandler
+ * @param TestApiHandler $restHandler
  * @return void
  */
 function try_handler($restHandler)
@@ -119,8 +126,8 @@ function try_handler($restHandler)
     if (empty($_SERVER['PATH_INFO'])) {
         send_openapi($restHandler);
     } else {
-        $dispatcher = get_dispatcher($restHandler);
-        dispatch_request($_SERVER['REQUEST_METHOD'], $_SERVER['PATH_INFO'], $dispatcher, $restHandler);
+        $router = get_router($restHandler);
+        handle_request($_SERVER['REQUEST_METHOD'], $_SERVER['PATH_INFO'], $router, $restHandler);
     }
 }
 
