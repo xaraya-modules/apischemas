@@ -17,9 +17,6 @@ use DataObject;
 use DataObjectFactory;
 use DataPropertyMaster;
 use Exception;
-use sys;
-
-sys::import('modules.dynamicdata.class.objects.factory');
 
 /**
  * Class to import the API schemas

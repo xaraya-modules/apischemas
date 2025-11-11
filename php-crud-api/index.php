@@ -1,4 +1,5 @@
 <?php
+
 /**
  * File: src/index.php
  *
@@ -9,10 +10,7 @@
 
 namespace Tqdev\PhpCrudApi;
 
-use Tqdev\PhpCrudApi\Api;
 use Tqdev\PhpCrudApi\Config\Config;
-use Tqdev\PhpCrudApi\RequestFactory;
-use Tqdev\PhpCrudApi\ResponseUtils;
 use sys;
 use xarSystemVars;
 

@@ -16,10 +16,6 @@
 namespace Xaraya\Modules\ApiSchemas;
 
 use Xaraya\Modules\InstallerClass;
-use sys;
-
-sys::import('modules.apischemas.class.import');
-sys::import('xaraya.modules.installer');
 
 /**
  * Handle module installer functions

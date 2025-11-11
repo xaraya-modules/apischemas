@@ -15,10 +15,6 @@ namespace Xaraya\Modules\ApiSchemas;
 
 use Xaraya\Modules\DynamicData\Traits\UserGuiInterface;
 use Xaraya\Modules\DynamicData\Traits\UserGuiTrait;
-use sys;
-
-sys::import('modules.dynamicdata.class.objects.factory');
-sys::import('modules.dynamicdata.traits.usergui');
 
 /**
  * Class instance to handle the ApiSchemas User GUI
@@ -38,7 +34,6 @@ class UserGui implements UserGuiInterface
      */
     public function test(array $args = [])
     {
-        sys::import('modules.apischemas.testgui');
         $testgui = new TestGui('apischemas');
         $testgui->init();
         $testgui->setContext($this->getContext());
