@@ -21,8 +21,18 @@ use Xaraya\Context\ContextInterface;
 use Xaraya\Context\ContextTrait;
 use Xaraya\Bridge\RestAPI\RestAPIHandler;
 use Xaraya\Bridge\RestAPI\RestAPIRoutes;
+// use the nikic FastRoute library here
+//use Xaraya\Routing\FastRouter;
+// use the Symfony Routing component here
+use Xaraya\Routing\Routing;
+use Xaraya\Routing\RouterInterface;
+use Xaraya\Services\WithServicesClass;
+use sys;
 use BadParameterException;
-use xarServer;
+use ForbiddenOperationException;
+use UnauthorizedOperationException;
+use JsonException;
+use Throwable;
 
 /**
  * Generic REST API handler based on openapi.json file to test the API schemas
@@ -31,6 +41,7 @@ use xarServer;
 class TestApiHandler implements ContextInterface
 {
     use ContextTrait;
+    use WithServicesClass;
 
     public static string $endpoint = 'api.php';
     /** @var array<string, mixed> */
@@ -66,8 +77,9 @@ class TestApiHandler implements ContextInterface
     /**
      * @param string $openApiFile
      */
-    public function __construct($openApiFile = null)
+    public function __construct($openApiFile = null, $xar = null)
     {
+        $this->setServicesClass($xar);
         $this->openApiFile = $openApiFile ?? dirname(__DIR__) . '/realworld/api/openapi.json';
     }
 
@@ -91,7 +103,7 @@ class TestApiHandler implements ContextInterface
         $openapi = $this->getOpenAPIFile();
         $content = file_get_contents($openapi);
         $doc = json_decode($content, true);
-        $doc['servers'][0]['url'] = static::getBaseURL();
+        $doc['servers'][0]['url'] = $this->getBaseURL();
         return $doc;
     }
 
@@ -102,20 +114,21 @@ class TestApiHandler implements ContextInterface
      * @param mixed $args
      * @return string
      */
-    public static function getBaseURL($base = '', $path = null, $args = [])
+    public function getBaseURL($base = '', $path = null, $args = [])
     {
+        $xar = $this->getServicesClass();
         if (empty($path)) {
-            return xarServer::getBaseURL() . self::$endpoint . $base;
+            return $xar->ctl()->getBaseURL() . self::$endpoint . $base;
         }
-        return xarServer::getBaseURL() . self::$endpoint . $base . '/' . $path;
+        return $xar->ctl()->getBaseURL() . self::$endpoint . $base . '/' . $path;
     }
 
     /**
-     * Generic request handler for all operations - requires finding the matching operation again
+     * Generic request processor for all operations - requires finding the matching operation again
      * @param array<string, mixed> $args
      * @return mixed
      */
-    public function handleRequest($args)
+    public function processRequest($args)
     {
         $path = $args['server']['PATH_INFO'] ?? '';
         $method = $args['server']['REQUEST_METHOD'];
@@ -276,8 +289,78 @@ class TestApiHandler implements ContextInterface
      */
     public function getRestApiHandler()
     {
-        $this->restApiHandler ??= new RestAPIHandler();
+        $this->restApiHandler ??= new RestAPIHandler($this->getServicesClass());
         return $this->restApiHandler;
+    }
+
+    /**
+     * Summary of handleRequest
+     * @param string $method
+     * @param string $path
+     * @return void
+     */
+    public function handleRequest($method, $path)
+    {
+        if ($method == 'OPTIONS') {
+            RestAPIHandler::sendCORSOptions();
+            return;
+        }
+        if (empty($path)) {
+            $result = $this->getOpenAPI();
+            $this->output($result);
+            return;
+        }
+        // $this->enableTimer(true);
+        $this->setTimer('start');
+        $router = $this->getRouter();
+        $this->setTimer('router');
+        [$handler, $vars] = $router->match($path, $method);
+        if (empty($handler)) {
+            switch ((string) $vars['status']) {
+                case '404':
+                    // ... 404 Not Found
+                    http_response_code(404);
+                    break;
+                case '405':
+                    // ... 405 Method Not Allowed
+                    if (!empty($vars['methods'])) {
+                        header('Allow: ' . implode(', ', $vars['methods']));
+                    }
+                    http_response_code(405);
+                    break;
+            }
+            return;
+        }
+        $this->setTimer('matched');
+        // ... call $handler with $vars
+        try {
+            [$result, $context] = $this->callHandler($handler, $vars);
+            $this->output($result);
+        } catch (UnauthorizedOperationException $e) {
+            $this->output('This operation is unauthorized, please authenticate.', 401);
+        } catch (ForbiddenOperationException $e) {
+            $this->output('This operation is forbidden.', 403);
+        } catch (Throwable $e) {
+            $result = "Exception: " . $e->getMessage();
+            if ($e->getPrevious() !== null) {
+                $result .= "\nPrevious: " . $e->getPrevious()->getMessage();
+            }
+            $result .= "\nTrace:\n" . $e->getTraceAsString();
+            $this->output($result, 422);
+        }
+    }
+
+    /**
+     * Summary of getRouter
+     * @return RouterInterface
+     */
+    protected function getRouter()
+    {
+        //$cacheFile = sys::varpath() . '/cache/api/test_api_routes.php';
+        //$router = new FastRouter($this->getRoutes(...), $cacheFile);
+        $cacheFile = null;
+        $router = new Routing($this->getRoutes(...), $cacheFile);
+        return $router;
     }
 
     /**
@@ -346,7 +429,7 @@ class TestApiHandler implements ContextInterface
         header('Content-Type: application/json; charset=utf-8');
         try {
             echo json_encode($result, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_NUMERIC_CHECK | JSON_THROW_ON_ERROR);
-        } catch (\JsonException $e) {
+        } catch (JsonException $e) {
             echo '{"JSON Exception": ' . json_encode($e->getMessage()) . '}';
         }
     }
