@@ -16,7 +16,7 @@ namespace Xaraya\Modules\ApiSchemas;
 use Xaraya\Modules\ModuleClass;
 
 /**
- * Get apischemas module classes via xarMod::getModule()
+ * Get apischemas module classes via xar::mod()->getModule()
  */
 class Module extends ModuleClass
 {
