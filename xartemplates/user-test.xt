@@ -39,7 +39,7 @@
                         <ul>
                         <xar:foreach in="$ops" key="$method" value="$op">
                             <xar:if condition="$method eq 'get'">
-                                <li><a href="#xarServer::getCurrentURL(['path' => $docpath])#">#$method#</a> (#$op['operationId']#): #$op['description']#</li>
+                                <li><a href="#$xar->ctl()->getCurrentURL(['path' => $docpath])#">#$method#</a> (#$op['operationId']#): #$op['description']#</li>
                             <xar:else/>
                                 <li>#$method# (#$op['operationId']#): #$op['description']#</li>
                             </xar:if>
