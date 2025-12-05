@@ -17,8 +17,8 @@ namespace Xaraya\Modules\ApiSchemas;
 //use Vural\OpenAPIFaker\OpenAPIFaker;
 //use OpenAPIServer\Mock\OpenApiDataMocker;
 use Xaraya\Context\ContextFactory;
-use Xaraya\Context\ContextInterface;
-use Xaraya\Context\ContextTrait;
+use Xaraya\Context\WithContextInterface;
+use Xaraya\Context\WithContextTrait;
 use Xaraya\Bridge\RestAPI\RestAPIHandler;
 use Xaraya\Bridge\RestAPI\RestAPIRoutes;
 // use the nikic FastRoute library here
@@ -26,7 +26,7 @@ use Xaraya\Bridge\RestAPI\RestAPIRoutes;
 // use the Symfony Routing component here
 use Xaraya\Routing\Routing;
 use Xaraya\Routing\RouterInterface;
-use Xaraya\Services\WithServicesClass;
+use Xaraya\Services\WithServicesTrait;
 use sys;
 use BadParameterException;
 use ForbiddenOperationException;
@@ -38,10 +38,10 @@ use Throwable;
  * Generic REST API handler based on openapi.json file to test the API schemas
  * @phpstan-import-type RouteDef from RestAPIRoutes
 **/
-class TestApiHandler implements ContextInterface
+class TestApiHandler implements WithContextInterface
 {
-    use ContextTrait;
-    use WithServicesClass;
+    use WithContextTrait;
+    use WithServicesTrait;
 
     public static string $endpoint = 'api.php';
     /** @var array<string, mixed> */
