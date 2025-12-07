@@ -45,7 +45,6 @@ final class UserGuiTest extends TestHelper
         //xar::mod()->init();
         // needed to initialize the template cache
         xar::tpl()->init();
-        xar::block()->init();
         $expected = 'View API Schemas';
         $output = (string) xar::mod()->guiFunc('apischemas');
         $this->assertStringContainsString($expected, $output);
