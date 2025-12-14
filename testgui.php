@@ -51,8 +51,6 @@ class TestGui extends UserGui
         // start by dereferencing components
         $doc['components'] = TestApiHandler::dereference($doc['components'], $doc);
         $args['doc'] = TestApiHandler::dereference($doc, $doc);
-        // Pass along the context for xar::tpl()->module() if needed
-        $args['context'] ??= $this->getContext();
         return $args;
     }
 }
